@@ -1,4 +1,4 @@
-import baseUrlApi from '../../utils/constant/index';
+import {baseUrlApi} from '../../utils/constant/index';
 
 //Function to call the API to recieve the profileInfo
 //It return all the user info

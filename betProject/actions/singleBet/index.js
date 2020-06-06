@@ -1,4 +1,4 @@
-import baseUrlApi from '../../utils/constant/index';
+import {baseUrlApi} from '../../utils/constant/index';
 
 //Function to call the API to add a new bet
 //It return all the user info

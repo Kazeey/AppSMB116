@@ -3,6 +3,7 @@ const app = express();
 const fetch = require("node-fetch");
 const cors = require('cors');
 const nodemailer = require("nodemailer");
+const bodyParser = require('body-parser');
 
 const key = "8f0736cf5aa618c9903b9f96973b3b59";
 const allSports = "https://api.the-odds-api.com/v3/sports/?all=true&apiKey="+key;
@@ -20,6 +21,8 @@ admin.initializeApp({
 const db = admin.firestore();
 app.use(cors())
 
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 //Import des fonctions
 const getAllBetsImport = require('./functions/bets/index.js');
 const loginImport = require('./functions/login/index.js');
@@ -33,9 +36,9 @@ const profileImport = require('./functions/profile/index.js');
 //Login
 
 app.get('/addStats/:id/:idUser/:oddsAverageAll/:nbWinAll/:moneyEarnAll/:nameSport/:nbWin/:odds/:moneyEarn/:percentageWin', loginImport.data.authentification);
-app.get('/login/authentification', loginImport.data.authentification);
-app.post('/login/forgotMail', loginImport.data.forgotMail);
-app.get('/login/resetPassword', loginImport.data.resetPassword);
+app.post('/api/login/authentification', loginImport.data.authentification);
+app.post('/api/login/forgotMail', loginImport.data.forgotMail);
+app.get('/api/login/resetPassword', loginImport.data.resetPassword);
 
 //Bets
 app.get('/api/getBets', getAllBetsImport.data.getAllBets);

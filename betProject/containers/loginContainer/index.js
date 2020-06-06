@@ -101,7 +101,7 @@ function loginContainer({ navigation }) {
           title='Se connecter'
           containerStyle={styles.loginButton}
           disabled={password === '' || username===''}
-          onClick={() => login(username, password, setAuth, navigation)}
+          onPress={() => login(username, password, setAuth, navigation)}
         >
         </Button>
       </View>

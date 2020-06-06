@@ -3,6 +3,7 @@ const app = express();
 const fetch = require("node-fetch");
 const cors = require('cors');
 const nodemailer = require("nodemailer");
+const bodyParser = require('body-parser');
 
 const key = "8f0736cf5aa618c9903b9f96973b3b59";
 const allSports = "https://api.the-odds-api.com/v3/sports/?all=true&apiKey="+key;
@@ -18,28 +19,39 @@ app.use(cors())
 
 let methods = {
     // ------------- Permet d'insérer les infos de login verif -------------//
-    /*
-        
-    */
     authentification : function(req, res){
-        let bddDocument = db.collection('User');
-        bddDocument.get()
-        .then(docs => {
-          let documents = [];
-          let nbDocuments = 0;
-          
-          docs.forEach(doc => { // Pour chaque documents on le rajoute dans le tableau et incrémente l'ID du nombre de paris
-            nbDocuments++;
-            documents.push(doc.data())
-          });
-
-          for(let i = 0; i < documents.length; i++)
-          {
-            console.log("username : " + documents[i].username + " email : " + documents[i].mail + " mdp : " + documents[i].MDP);
-            let bddDocument = db.collection("loginVerif").where("mail", "==", documents[i].mail).update('nbEssai'+1);
-          }
-
+      console.log("username : ", req.body.username," password : ",  req.body.password, " date : ", req.body.date)
+      let bddUser = db.collection('User').where("username", "==", req.body.username);
+      bddUser.get()
+      .then(docs => {
+        let documentsUser = {};
+        docs.forEach(doc => { 
+          documentsUser = doc.data();
         });
+
+        if(documentsUser.password === req.body.password){
+         //res.send(documentsUser.userId)
+        }else {
+          let bddloginVerif = db.collection('loginVerif').where('mail', '==', documentsUser.mail);
+          bddloginVerif.get()
+          .then(docs => {
+            let documentsLogin = {};
+            docs.forEach(doc => { 
+              documentsLogin = doc.data();
+            });
+
+            let bddDateloginVerif = db.collection('loginVerif').where('date', '==', req.body.date);
+            bddDateloginVerif.get()
+            .then(docs => {
+              let documentsDate = {};
+              docs.forEach(doc => { 
+                documentsDate = doc.data();
+              });
+            });
+          });
+        }
+
+      });
     },
 
     forgotMail : function(req, res){  
