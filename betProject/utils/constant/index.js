@@ -1,0 +1,1 @@
+const baseUrlApi = "http://localhost:3000/api/";

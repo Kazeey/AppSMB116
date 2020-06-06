@@ -1,0 +1,21 @@
+{
+  "name": "back",
+  "version": "1.0.0",
+  "description": "Test back de l'appli paris",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "firebase-admin": "^8.12.1",
+    "firebase-functions": "^3.6.2",
+    "google-auth-library": "^6.0.0",
+    "node-fetch": "^2.6.0",
+    "request-promise": "^4.2.5",
+    "require-stack": "^1.0.2"
+  }
+}
