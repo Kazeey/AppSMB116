@@ -133,7 +133,7 @@ let methods = {
 
     },
 
-    resetPassword : function(req, res){
+    resetPassword : async function(req, res){
       var transporter = nodemailer.createTransport({
         service: 'Yahoo', // Service utilisé pour l'envoi de l'email
         auth: {
@@ -142,8 +142,9 @@ let methods = {
         }
       });
       
-      let newPassword;
+      let newPassword = Math.floor(Math.random() * 1000000) + 100000;;
 
+      console.log(req.body.username);
       let bddUser = db.collection('User').where("username", "==", req.body.username);
       await bddUser.get()
       .then(async docs =>  {
@@ -159,23 +160,35 @@ let methods = {
             documentsUser = null;
           }
         });
-        console.log(documentsUser);
-      });
 
-      var mailOptions = {
-        from: 'tvsprono@yahoo.com', // Expéditeur
-        to:  documentsUser.mail, // Destinataire
-        subject: '[TvsProno] - Nouveau mot de passe', // Objet du mail
-        html: "<p>Veuillez trouver votre nouveau mot de passe : <h1>"+ newPassword +"</h1>, si vous n'êtes pas à l'origine de cette action, veuillez faire attention a vos informations confidentielles.</p>"  // Contenu du mail
-      };
-      
-      transporter.sendMail(mailOptions, function(error, info){
-        if (error) {
-          console.log(error);
-        } else {
-          console.log('Email sent: ' + info.response);
-        }
+        var mailOptions = {
+          from: 'tvsprono@yahoo.com', // Expéditeur
+          to:  documentsUser.mail, // Destinataire
+          subject: '[TvsProno] - Nouveau mot de passe', // Objet du mail
+          html: "<p>Veuillez trouver votre nouveau mot de passe : <b>"+ newPassword +"</b>, si vous n'êtes pas à l'origine de cette action, veuillez faire attention a vos informations confidentielles.</p>"  // Contenu du mail
+        };
+        
+        transporter.sendMail(mailOptions, function(error, info){
+          if (error) {
+            console.log(error);
+          } else {
+            console.log('Email sent: ' + info.response);
+          }
+        });
+
+        let updatePassword = { 
+          password : ""+newPassword+"",
+        };
+
+        let updateBddPassword = db.collection('User').where("username", "==", req.body.username);
+        const updateBdd = await updateBddPassword.get()
+        .then(query => {
+          query.forEach(function(doc) {
+            doc.ref.update(updatePassword);
+          });
+        });
       });
+      res.send({response : "Ok"});
     }, 
 }
 

@@ -14,7 +14,6 @@ const resetPassword = async (username , setMessage) => {
     })
     .then(res => res.json())
     .then(data => {
-        console.log(data.response)
         setMessage('Si votre compte existe sur notre plateforme, un mail de récupération est en route !');
         return data.response
     });

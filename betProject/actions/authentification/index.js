@@ -18,7 +18,6 @@ const authentification = async (username, password) => {
     })
     .then(res => res.json())
     .then(data => {
-        console.log(data.response)
         return data.response
     });
     return resp;
