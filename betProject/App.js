@@ -5,7 +5,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import 'antd-mobile/dist/antd-mobile.css';
 
 import loginContainer from './containers/loginContainer/index';
 import homeContainer from './containers/homeContainer/index';

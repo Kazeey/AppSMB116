@@ -11,51 +11,98 @@ const urlUpcoming = ""+key;
 
 let admin = require("firebase-admin");
 
+let FieldValue = admin.firestore.FieldValue;
 let serviceAccount = require("../../tvsprono-dab6b-firebase-adminsdk-8legt-1a75d8f5c7.json");
 
 const db = admin.firestore();
 app.use(cors())
 
+let date = new Date().getDate(); //Current Date
+let month = new Date().getMonth() + 1; //Current Month
+let year = new Date().getFullYear(); //Current Year
+
+if(date < 10){
+    date = "0"+date;
+}
+
+if(month < 10){
+    month = "0"+month;
+}
+
+let currentDate = date + "-" + month + "-" + year
 
 let methods = {
     // ------------- Permet d'insérer les infos de login verif -------------//
-    authentification : function(req, res){
-      console.log("username : ", req.body.username," password : ",  req.body.password, " date : ", req.body.date)
+    authentification : async function(req, res){
+      console.log("username : ", req.body.username," password : ",  req.body.password, " date : ", currentDate)
+
       let bddUser = db.collection('User').where("username", "==", req.body.username);
-      bddUser.get()
-      .then(docs => {
+      const response = await bddUser.get()
+      .then(async docs =>  {
         let documentsUser = {};
         docs.forEach(doc => { 
           documentsUser = doc.data();
         });
 
-        if(documentsUser.password === req.body.password){
-         //res.send(documentsUser.userId)
-        }else {
-          let bddloginVerif = db.collection('loginVerif').where('mail', '==', documentsUser.mail);
-          bddloginVerif.get()
-          .then(docs => {
-            let documentsLogin = {};
-            docs.forEach(doc => { 
-              documentsLogin = doc.data();
-            });
+        let bddVerif = db.collection('loginVerif').where("mail", "==", documentsUser.mail);
+        const respVerif = await bddVerif.get()
+        .then(async verifs => {
+          let loginVerifInfo = [];
 
-            let bddDateloginVerif = db.collection('loginVerif').where('date', '==', req.body.date);
-            bddDateloginVerif.get()
-            .then(docs => {
-              let documentsDate = {};
-              docs.forEach(doc => { 
-                documentsDate = doc.data();
-              });
-            });
+          verifs.forEach(verif => { 
+            if(verif.data().date === currentDate){
+              loginVerifInfo.push(verif.data());
+            }
           });
-        }
 
+          console.log('nbVerif', loginVerifInfo[0].nbVerif)
+          if(loginVerifInfo && loginVerifInfo[0].nbVerif >= 5)
+          {
+            res.send({response : "blocked"});
+          }
+          else
+          {
+            if(documentsUser.password === req.body.password)
+            {
+              let deleteBddVerif = db.collection('loginVerif').where("verifId", "==", loginVerifInfo[0].verifId);
+              const deleteVerif = await deleteBddVerif.get()
+              .then(query => {
+                query.forEach(function(doc) {
+                  doc.ref.delete();
+                });
+              });
+              res.send({response : documentsUser.userId})
+            }
+            else
+            {
+              let updateLoginVerif = { 
+                nbVerif : loginVerifInfo[0].nbVerif+1,
+              };
+              let deleteBddVerif = db.collection('loginVerif').where("verifId", "==", loginVerifInfo[0].verifId);
+              const deleteVerif = await deleteBddVerif.get()
+              .then(query => {
+                query.forEach(function(doc) {
+                  doc.ref.update(updateLoginVerif);
+                });
+              });
+              const nbEssai = 5 - (loginVerifInfo[0].nbVerif + 1)
+              res.send({response : nbEssai });
+            }
+          }
+        })
+
+        return respVerif
       });
+      console.log('response', response)
+      res.send(response)
     },
 
     forgotMail : function(req, res){  
-        var transporter = nodemailer.createTransport({
+
+    },
+
+    resetPassword : function(req, res){
+      var transporter = nodemailer.createTransport({
         service: 'Yahoo', // Service utilisé pour l'envoi de l'email
         auth: {
           user: 'tvsprono@yahoo.com', // Email que j'ai créé pour avoir une boite sur Yahoo
@@ -77,11 +124,6 @@ let methods = {
           console.log('Email sent: ' + info.response);
         }
       });
-        
-    },
-
-    resetPassword : function(req, res){
-        
     }, 
 }
 
