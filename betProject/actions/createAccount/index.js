@@ -4,7 +4,7 @@ import { baseUrlApi } from '../../utils/constant/index';
 //The password is not hashed cause in the future
 //We will be in HTTPS, and all the data between front and back will be crypted
 //By the SSL protocol
-const createAccount = async (name, firstname, username, password, mail) => {
+const createAccount = async (name, firstname, username, mail) => {
     const resp = await fetch(baseUrlApi+'login/createAccount', {
     method: 'POST',
     headers: {
@@ -15,7 +15,6 @@ const createAccount = async (name, firstname, username, password, mail) => {
         'name': name,
         'firstname': firstname,
         'username': username,
-        'password': password,
         'mail': mail,
     })
     })

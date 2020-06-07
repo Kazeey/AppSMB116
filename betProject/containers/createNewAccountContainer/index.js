@@ -30,13 +30,13 @@ const styles = StyleSheet.create({
   },
 });
 
-const verifInput = (name, firstname, username, password, mail, setAuth) => {
+const verifInput = (name, firstname, username, mail, setAuth) => {
   if(mail) {
     const indexOfAt = mail.indexOf('@');
     const indexOfPoint = mail.indexOf('.', indexOfAt);
     
     if( indexOfAt > 0 && indexOfPoint > 0) {
-      createAccount(name, firstname, username, password, mail)
+      createAccount(name, firstname, username, mail);
     }
     else {
       setAuth("Le format de l'addresse mail inscrite est incorrect ! Veuillez la modifier.");
@@ -49,7 +49,6 @@ function createNewAccountContainer({ navigation }) {
     const [name, setName] = React.useState('');
     const [firstname, setFirstname] = React.useState('');
     const [username, setUsername] = React.useState('');
-    const [password, setPassword] = React.useState('');
     const [mail, setMail] = React.useState('');
     const [authError, setAuth] = React.useState(false);
 
@@ -57,12 +56,12 @@ function createNewAccountContainer({ navigation }) {
       <View>
           {headerComponent(navigation, "Page création de compte")}
             <Input
-            placeholder='Name'
-            inputContainerStyle={styles.loginInput}
-            leftIconContainerStyle={styles.loginInputIcon}
-            value={name}
-            onChange={(newValue)=> setName(newValue.target.value)}
-            leftIcon={{type:'font-awesome', name: 'user'}}
+              placeholder='Name'
+              inputContainerStyle={styles.loginInput}
+              leftIconContainerStyle={styles.loginInputIcon}
+              value={name}
+              onChange={(newValue)=> setName(newValue.target.value)}
+              leftIcon={{type:'font-awesome', name: 'user'}}
             />
             <Input
               placeholder='Firstname'
@@ -82,15 +81,6 @@ function createNewAccountContainer({ navigation }) {
               leftIcon={{type:'font-awesome', name: 'user'}}
             />
             <Input
-              placeholder='Password'
-              inputContainerStyle={styles.loginInput}
-              leftIconContainerStyle={styles.loginInputIcon}
-              value={password}
-              onChange={(newValue)=> setPassword(newValue.target.value)}
-              leftIcon={{type:'font-awesome', name: 'lock'}}
-              secureTextEntry={true}
-            />        
-            <Input
               placeholder='Mail'
               inputContainerStyle={styles.loginInput}
               leftIconContainerStyle={styles.loginInputIcon}
@@ -104,8 +94,8 @@ function createNewAccountContainer({ navigation }) {
             <Button
               title='Créer un compte'
               containerStyle={styles.loginButton}
-              disabled={name === '' || firstname === '' || username === '' || password === '' || mail === ''}
-              onPress={() => verifInput(name, firstname, username, password, mail, setAuth)}
+              disabled={name === '' || firstname === '' || username === '' || mail === ''}
+              onPress={() => verifInput(name, firstname, username, mail, setAuth)}
             >
             </Button>
       </View>

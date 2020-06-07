@@ -4,6 +4,7 @@ const fetch = require("node-fetch");
 const cors = require('cors');
 const nodemailer = require("nodemailer");
 const bodyParser = require('body-parser');
+const { uuid } = require('uuidv4');
 
 const key = "8f0736cf5aa618c9903b9f96973b3b59";
 const allSports = "https://api.the-odds-api.com/v3/sports/?all=true&apiKey="+key;
@@ -131,8 +132,27 @@ let methods = {
       
     },
 
-    createAccount : function(req, res){  
+    createAccount : async function(req, res){  
+      let tempPassword = Math.floor(Math.random() * 1000000) + 100000;
 
+      let newAccount = {
+        cguCgv : true,
+        name : req.body.name,
+        firstname : req.body.firstname,
+        mail : req.body.mail,
+        username : req.body.username,
+        password : ""+tempPassword+"",
+        role : "user",
+        state : true,
+        userId : uuid(),
+      }
+      
+      let bddUser = db.collection('User');
+      await bddUser.get()
+      .then(async docs =>  {
+        let createBddUser = db.collection('User').doc(`${newAccount.userId}`).set(newAccount);
+      });
+      res.send({response : "Compte Créé"});
     },
 
     resetPassword : async function(req, res){
@@ -144,7 +164,7 @@ let methods = {
         }
       });
       
-      let newPassword = Math.floor(Math.random() * 1000000) + 100000;;
+      let newPassword = Math.floor(Math.random() * 1000000) + 100000;
 
       console.log(req.body.username);
       let bddUser = db.collection('User').where("username", "==", req.body.username);
