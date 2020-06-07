@@ -25,7 +25,7 @@ function statsContainer({ navigation }) {
       <View >
         {headerComponent(navigation, 'Statistique')}
         <Button
-          onClick={() => navigation.navigate('LoginContainer')}
+          //onClick={() => navigation.navigate('LoginContainer')}
         >
           Go to Home
         </Button>

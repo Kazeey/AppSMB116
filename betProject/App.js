@@ -14,6 +14,7 @@ import singleBetContainer from './containers/singleBetContainer/index';
 import addNewBetContainer from './containers/addNewBetContainer/index';
 import dailyBetsContainer from './containers/dailyBetsContainer/index';
 import profileContainer from './containers/profileContainer/index';
+import createNewAccountContainer from './containers/createNewAccountContainer/index';
 
 const Stack = createStackNavigator();
 
@@ -84,6 +85,7 @@ function App() {
           <Stack.Screen name="home" component={Home}  options={{headerShown: false}} />
           <Stack.Screen name="singleBetContainer" component={singleBetContainer}  options={{headerShown: false}} />
           <Stack.Screen name="addNewBetContainer" component={addNewBetContainer}  options={{headerShown: false}} />
+          <Stack.Screen name="createNewAccountContainer" component={createNewAccountContainer}  options={{headerShown: false}} />
         </Stack.Navigator>
       </NavigationContainer>
   );

@@ -10,6 +10,7 @@ import { Image } from 'react-native-elements';
 import loginImage from '../../utils/picture/loginImage.jpg';
 import errorMessageComponent from '../../components/text/errorMessage/index';
 import authentification from '../../actions/authentification';
+import resetPassword from '../../actions/resetPassword';
 
 //Declaration du style
 const styles = StyleSheet.create({
@@ -102,6 +103,19 @@ function loginContainer({ navigation }) {
           containerStyle={styles.loginButton}
           disabled={password === '' || username===''}
           onPress={() => login(username, password, setAuth, navigation)}
+        >
+        </Button>
+        <Button
+          title='Mot de passe oublié'
+          containerStyle={styles.loginButton}
+          disabled={username===''}
+          onPress={() => resetPassword(username, setAuth)}
+        >
+        </Button>
+        <Button
+          title='Créer un compte'
+          containerStyle={styles.loginButton}
+          onPress={() => navigation.navigate('createNewAccountContainer')}
         >
         </Button>
       </View>
