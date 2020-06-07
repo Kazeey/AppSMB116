@@ -39,7 +39,7 @@ const login = async (username, password, setAuth, navigation) => {
   const resp = await authentification(username, password);
   //La réponse est un string 'blocked' signifie que le compte est bloqué
   if(resp === 'blocked' ){
-    setAuth("Votre compte est actuellement suspendu, veuillez contacter le support pour plus d'information");
+    setAuth("Votre compte est actuellement suspendu, ou n'existe pas, veuillez contacter le support pour plus d'informations");
   }else{
     //La réponse est un string qui n'est pas 'blocked' signifie qu'il contient un userId
     if(typeof resp === 'string'){
@@ -52,7 +52,7 @@ const login = async (username, password, setAuth, navigation) => {
     }else{
       //Sinon, la réponse est un number qui est le nombre d'éssai restant avec ce mail. Si ce mail n'existe pas, renvoie tout de même un nbEssaie (5) pour ne 
       //Pas faire voir que le mail existe
-      setAuth('Votre username ou votre password est incorrect. Il vous reste '+resp+ ' essais !');
+      setAuth('Votre username ou votre password est incorrect. Il vous reste '+resp+' essais !');
     }
   }
 }
