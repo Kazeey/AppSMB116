@@ -70,7 +70,6 @@ function createNewAccountContainer({ navigation }) {
               value={firstname}
               onChange={(newValue)=> setFirstname(newValue.target.value)}
               leftIcon={{type:'font-awesome', name: 'user'}}
-              secureTextEntry={true}
             />        
             <Input
               placeholder='Username'

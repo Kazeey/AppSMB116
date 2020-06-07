@@ -29,6 +29,14 @@ if(month < 10){
 }
 let currentDate = date + "-" + month + "-" + year
 
+let transporter = nodemailer.createTransport({
+  service: 'Yahoo', // Service utilisé pour l'envoi de l'email
+  auth: {
+    user: 'tvsprono@yahoo.com', // Email que j'ai créé pour avoir une boite sur Yahoo
+    pass: 'ewogyqmackvlqnwa' // Mod de passe généré par Yahoo pour l'application
+  }
+});
+
 let methods = {
     //TODO AJOUTER CATCH ERROR POUR GERER LES ERRORS LORS DE LA COMMUNICATION AVEC LA BDD
     //TODO Checker l'utilisation de firebase auth
@@ -146,27 +154,73 @@ let methods = {
         state : true,
         userId : uuid(),
       }
-      
-      let bddUser = db.collection('User');
-      await bddUser.get()
+
+      var mailOptions = {
+        from: 'tvsprono@yahoo.com', // Expéditeur
+        to:  req.body.mail, // Destinataire
+        subject: '[TvsProno] - Nouveau mot de passe', // Objet du mail
+        html: "<p>Bonjour, suite à la création de votre compte veuillez trouver votre mot de passe temporaire : <b>"+ tempPassword +"</b>. Une fois votre première connexion sur l'application, vous pourrez le modifier dans la page 'profil'.</p>"  // Contenu du mail
+      };
+
+      let checkBddUser = db.collection('User');
+      await checkBddUser.get()
       .then(async docs =>  {
-        let createBddUser = db.collection('User').doc(`${newAccount.userId}`).set(newAccount);
+        //Récupération des informations du users
+        let documentsUser = null;
+        docs.forEach(doc => { 
+          if(doc.data())
+          {
+            documentsUser = doc.data();
+          }
+          else
+          {
+            documentsUser = null;
+          }
+        });
+
+        if(documentsUser === null){
+          let bddUser = db.collection('User');
+          bddUser.get()
+          .then(async docs =>  {
+            let createBddUser = db.collection('User').doc(`${newAccount.userId}`).set(newAccount);
+          });   
+
+          transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+              console.log("Erreur lors de l'envoi ", error);
+            } else {
+              console.log('Email envoyé : ' + info.response);
+            }
+          });
+
+          res.send({response : "Un mail vous à été envoyé à l'adresse : " + req.body.mail});
+        } else {
+          if(documentsUser.mail == req.body.mail) {
+            res.send({response : "L'adresse mail est déjà associée à un compte !"});
+          } else {            
+            let bddUser = db.collection('User');
+            bddUser.get()
+            .then(async docs =>  {
+              let createBddUser = db.collection('User').doc(`${newAccount.userId}`).set(newAccount);
+            });   
+
+            transporter.sendMail(mailOptions, function(error, info){
+              if (error) {
+                console.log("Erreur lors de l'envoi ", error);
+              } else {
+                console.log('Email envoyé : ' + info.response);
+              }
+            });
+            res.send({response : "Un mail vous à été envoyé à l'adresse : " + req.body.mail });
+          }
+        } 
       });
-      res.send({response : "Compte Créé"});
     },
 
     resetPassword : async function(req, res){
-      var transporter = nodemailer.createTransport({
-        service: 'Yahoo', // Service utilisé pour l'envoi de l'email
-        auth: {
-          user: 'tvsprono@yahoo.com', // Email que j'ai créé pour avoir une boite sur Yahoo
-          pass: 'ewogyqmackvlqnwa' // Mod de passe généré par Yahoo pour l'application
-        }
-      });
-      
+
       let newPassword = Math.floor(Math.random() * 1000000) + 100000;
 
-      console.log(req.body.username);
       let bddUser = db.collection('User').where("username", "==", req.body.username);
       await bddUser.get()
       .then(async docs =>  {
@@ -183,32 +237,35 @@ let methods = {
           }
         });
 
-        var mailOptions = {
-          from: 'tvsprono@yahoo.com', // Expéditeur
-          to:  documentsUser.mail, // Destinataire
-          subject: '[TvsProno] - Nouveau mot de passe', // Objet du mail
-          html: "<p>Veuillez trouver votre nouveau mot de passe : <b>"+ newPassword +"</b>, si vous n'êtes pas à l'origine de cette action, veuillez faire attention a vos informations confidentielles.</p>"  // Contenu du mail
-        };
-        
-        transporter.sendMail(mailOptions, function(error, info){
-          if (error) {
-            console.log(error);
-          } else {
-            console.log('Email sent: ' + info.response);
-          }
-        });
-
         let updatePassword = { 
           password : ""+newPassword+"",
         };
 
-        let updateBddPassword = db.collection('User').where("username", "==", req.body.username);
-        const updateBdd = await updateBddPassword.get()
-        .then(query => {
-          query.forEach(function(doc) {
-            doc.ref.update(updatePassword);
+        if(documentsUser)
+        {
+          var mailOptions = {
+            from: 'tvsprono@yahoo.com', // Expéditeur
+            to:  documentsUser.mail, // Destinataire
+            subject: '[TvsProno] - Nouveau mot de passe', // Objet du mail
+            html: "<p>Veuillez trouver votre nouveau mot de passe : <b>"+ newPassword +"</b>, si vous n'êtes pas à l'origine de cette action, veuillez faire attention a vos informations confidentielles.</p>"  // Contenu du mail
+          };
+          
+          transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+              console.log("Erreur lors de l'envoi ", error);
+            } else {
+              console.log('Email envoyé : ' + info.response);
+            }
           });
-        });
+
+          let updateBddPassword = db.collection('User').where("username", "==", req.body.username);
+          const updateBdd = await updateBddPassword.get()
+          .then(query => {
+            query.forEach(function(doc) {
+              doc.ref.update(updatePassword);
+            });
+          });
+        }
       });
       res.send({response : "Ok"});
     }, 
