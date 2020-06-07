@@ -38,6 +38,7 @@ const profileImport = require('./functions/profile/index.js');
 app.get('/addStats/:id/:idUser/:oddsAverageAll/:nbWinAll/:moneyEarnAll/:nameSport/:nbWin/:odds/:moneyEarn/:percentageWin', loginImport.data.authentification);
 app.post('/api/login/authentification', loginImport.data.authentification);
 app.post('/api/login/resetPassword', loginImport.data.resetPassword);
+app.post('/api/login/createAccount', loginImport.data.createAccount);
 
 //Bets
 app.get('/api/getBets', getAllBetsImport.data.getAllBets);

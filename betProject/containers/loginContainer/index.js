@@ -93,7 +93,6 @@ function loginContainer({ navigation }) {
         />
         {
           authError && errorMessageComponent(authError)
-          
         }
         {
           //TODO: Connexion avec Google / Facebook avec JWT
