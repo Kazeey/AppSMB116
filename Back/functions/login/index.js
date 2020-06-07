@@ -32,11 +32,15 @@ if(month < 10){
 let currentDate = date + "-" + month + "-" + year
 
 let methods = {
+    //TODO AJOUTER CATCH ERROR POUR GERER LES ERRORS LORS DE LA COMMUNICATION AVEC LA BDD
+    //TODO Checker l'utilisation de firebase auth
+
     // ------------- Permet d'insérer les infos de login verif -------------//
     authentification : async function(req, res){
       let bddUser = db.collection('User').where("username", "==", req.body.username);
-      const response = await bddUser.get()
+      await bddUser.get()
       .then(async docs =>  {
+        //Récupération des informations du users
         let documentsUser = null;
         docs.forEach(doc => { 
           if(doc.data())
@@ -48,31 +52,30 @@ let methods = {
             documentsUser = null;
           }
         });
-
+        //Si il n'existe pas ou si il n'est pas activé, Renvoie au front que c'est le cas
         if(documentsUser === null || documentsUser.state == false)
         {
           res.send({response : "blocked"});
         }
         else
         { 
+          //Cherche si il a déja essayer de se connecter sur la plateforme
           let bddVerif = db.collection('loginVerif').where("mail", "==", documentsUser.mail);
           const respVerif = await bddVerif.get()
           .then(async verifs => {
             let loginVerifInfo = [];
-
             verifs.forEach(verif => { 
               if(verif.data().date === currentDate){
                 loginVerifInfo.push(verif.data());
               }
             });
-          
-            if(loginVerifInfo.length > 0 && loginVerifInfo[0].nbVerif > 4) // S'il y a plus de 5 essai retourne "blocked"
-            {              
+            // S'il y a plus de 5 essai retourne "blocked" et bloque le compte
+            if(loginVerifInfo.length > 0 && loginVerifInfo[0].nbVerif > 4){              
               let changeStateToFalse = { 
                 state : false,
               };
               let changeStateAccountBdd = db.collection('User').where("mail", "==", documentsUser.mail);
-              const changeState = await changeStateAccountBdd.get()
+              await changeStateAccountBdd.get()
               .then(query => {
                 query.forEach(function(doc) {
                   doc.ref.update(changeStateToFalse);
@@ -80,12 +83,12 @@ let methods = {
               });
               res.send({response : "blocked"});  
             }
-            else // si moins de 5 essai
+            else // Si moins de 5 essais
             {
-              if(documentsUser.password === req.body.password) // compare le mdp et supprime le document si c'est bon
+              if(documentsUser.password === req.body.password) // Compare les mdp et supprime les essais de connexion si c'est bon
               {
                 let deleteBddVerif = db.collection('loginVerif').where("verifId", "==", loginVerifInfo[0].verifId);
-                const deleteVerif = await deleteBddVerif.get()
+                await deleteBddVerif.get()
                 .then(query => {
                   query.forEach(function(doc) {
                     doc.ref.delete();
@@ -95,9 +98,10 @@ let methods = {
               }
               else // sinon incrémente le nombre de vérif
               {
+                //Si il n'a jamais essayé de se connecter avant, crée dans la bdd son essai
                 if(loginVerifInfo.length == 0)
                 {
-                  let setupBddVerif = db.collection('loginVerif').doc(`${documentsUser.userId}`).set({
+                  db.collection('loginVerif').doc(`${documentsUser.userId}`).set({
                     mail : documentsUser.mail,
                     nbVerif : 1,
                     verifId : documentsUser.userId,
@@ -105,7 +109,7 @@ let methods = {
                   })
                   res.send({response : 4 });
                 }
-                else
+                else //Sinon incrémente son nombre d'essai
                 {
                   let updateLoginVerif = { 
                     nbVerif : loginVerifInfo[0].nbVerif+1,
