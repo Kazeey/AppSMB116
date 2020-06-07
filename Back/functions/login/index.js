@@ -147,7 +147,7 @@ let methods = {
       
       let newPassword;
 
-      let bddUser = db.collection('User').where("username", "==", req.body.mail);
+      let bddUser = db.collection('User').where("username", "==", req.body.username);
       await bddUser.get()
       .then(async docs =>  {
         //Récupération des informations du users
