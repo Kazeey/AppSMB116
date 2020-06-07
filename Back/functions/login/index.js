@@ -49,6 +49,7 @@ let methods = {
             documentsUser = null;
           }
         });
+
         //Si il n'existe pas ou si il n'est pas activé, Renvoie au front que c'est le cas
         if(documentsUser === null || documentsUser.state == false)
         {
@@ -66,6 +67,7 @@ let methods = {
                 loginVerifInfo.push(verif.data());
               }
             });
+            
             // S'il y a plus de 5 essai retourne "blocked" et bloque le compte
             if(loginVerifInfo.length > 0 && loginVerifInfo[0].nbVerif > 4){              
               let changeStateToFalse = { 
@@ -84,7 +86,7 @@ let methods = {
             {
               if(documentsUser.password === req.body.password) // Compare les mdp et supprime les essais de connexion si c'est bon
               {
-                let deleteBddVerif = db.collection('loginVerif').where("verifId", "==", loginVerifInfo[0].verifId);
+                let deleteBddVerif = db.collection('loginVerif').where("mail", "==", documentsUser.mail);
                 await deleteBddVerif.get()
                 .then(query => {
                   query.forEach(function(doc) {
