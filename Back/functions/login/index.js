@@ -136,10 +136,6 @@ let methods = {
 
     },
 
-    forgotMail : function(req, res){  
-
-    },
-
     resetPassword : function(req, res){
       var transporter = nodemailer.createTransport({
         service: 'Yahoo', // Service utilisé pour l'envoi de l'email
@@ -149,6 +145,23 @@ let methods = {
         }
       });
       
+      let bddUser = db.collection('User').where("username", "==", req.body.mail);
+      await bddUser.get()
+      .then(async docs =>  {
+        //Récupération des informations du users
+        let documentsUser = null;
+        docs.forEach(doc => { 
+          if(doc.data())
+          {
+            documentsUser = doc.data();
+          }
+          else
+          {
+            documentsUser = null;
+          }
+        });
+        console.log(documentsUser);
+      });
       var mailOptions = {
         from: 'tvsprono@yahoo.com', // Expéditeur
         to: 'quentinpeze@hotmail.fr', // Destinataire
@@ -168,27 +181,3 @@ let methods = {
 
 exports.data = methods;
 
-/*
-        // On récupère les données de la BDD
-        let bddDocument = db.collection('loginVerif');
-        bddDocument.get()
-        .then(docs => {
-            let documents = [];
-            let nbDocuments = 0;
-
-            docs.forEach(doc => { // Pour chaque documents on le rajoute dans le tableau et incrémente l'ID du nombre de paris
-                nbDocuments++;
-                documents.push(doc.data())
-            });
-
-            let data = { // Formatage des données pour la table Users
-                idVerif: req.params.idVerif,
-                mail: req.params.mail,
-                date: req.params.date,
-                nbEssai: req.params.nbEssai,
-            };
-            nbDocuments++; // Incrémentation du nombre de paris présent en base pour l'ID
-
-            let Bets = db.collection('loginVerif').doc(`${nbDocuments}`).set(data); // Ajout des données en base
-        });
-*/
