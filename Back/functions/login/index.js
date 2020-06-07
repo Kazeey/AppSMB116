@@ -20,15 +20,12 @@ app.use(cors())
 let date = new Date().getDate(); //Current Date
 let month = new Date().getMonth() + 1; //Current Month
 let year = new Date().getFullYear(); //Current Year
-
 if(date < 10){
     date = "0"+date;
 }
-
 if(month < 10){
     month = "0"+month;
 }
-
 let currentDate = date + "-" + month + "-" + year
 
 let methods = {
@@ -133,10 +130,6 @@ let methods = {
     },
 
     createAccount : function(req, res){  
-
-    },
-
-    forgotMail : function(req, res){  
 
     },
 
