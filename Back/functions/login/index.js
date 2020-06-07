@@ -145,6 +145,8 @@ let methods = {
         }
       });
       
+      let newPassword;
+
       let bddUser = db.collection('User').where("username", "==", req.body.mail);
       await bddUser.get()
       .then(async docs =>  {
@@ -162,11 +164,12 @@ let methods = {
         });
         console.log(documentsUser);
       });
+
       var mailOptions = {
         from: 'tvsprono@yahoo.com', // Expéditeur
-        to: 'quentinpeze@hotmail.fr', // Destinataire
-        subject: 'Sending Email using Node.js', // Objet du mail
-        text: 'Votre mot de passe temporaire est  : '  // Contenu du mail
+        to:  documentsUser.mail, // Destinataire
+        subject: '[TvsProno] - Nouveau mot de passe', // Objet du mail
+        html: '<p>Veuillez trouver votre nouveau mot de passe : <h1>'+ newPassword +'</h1></p>'  // Contenu du mail
       };
       
       transporter.sendMail(mailOptions, function(error, info){
