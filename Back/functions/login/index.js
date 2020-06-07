@@ -169,7 +169,7 @@ let methods = {
         from: 'tvsprono@yahoo.com', // Expéditeur
         to:  documentsUser.mail, // Destinataire
         subject: '[TvsProno] - Nouveau mot de passe', // Objet du mail
-        html: '<p>Veuillez trouver votre nouveau mot de passe : <h1>'+ newPassword +'</h1></p>'  // Contenu du mail
+        html: "<p>Veuillez trouver votre nouveau mot de passe : <h1>"+ newPassword +"</h1>, si vous n'êtes pas à l'origine de cette action, veuillez faire attention a vos informations confidentielles.</p>"  // Contenu du mail
       };
       
       transporter.sendMail(mailOptions, function(error, info){
