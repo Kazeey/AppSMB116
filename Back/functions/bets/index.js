@@ -31,7 +31,6 @@ let methods = {
 
     getDailyBets : async function(req, res) {
       const data = [];
-      console.log(req.body.data);
       let bddDocument = await db.collection('Bet').where('startTime', '==', req.body.date);
       bddDocument.get() // Récupère tous les sports
       .then(docs => {

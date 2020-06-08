@@ -16,7 +16,7 @@ const getData = async () => {
 
 function betsContainer({ navigation }) {
   const userId = getData();
-  const role = checkRole(userId)
+ // const role = checkRole(userId)
     return (
       <ScrollView >
         {headerComponent(navigation, "Liste des paris")}

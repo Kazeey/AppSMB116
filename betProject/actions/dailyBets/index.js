@@ -11,8 +11,8 @@ if(month < 10){
 }
 let currentDate = date + "-" + month + "-" + year
 
-const getDailyBets = async(userId) => {
-    const resp = await fetch(baseUrlApi+'dailyBets', {
+const getDailyBets = () => {
+    return fetch(baseUrlApi+'dailyBets', {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json',
@@ -26,8 +26,6 @@ const getDailyBets = async(userId) => {
     .then(data => {
         return data.response
     });
-    console.log("action ", resp)
-    return resp;
   }
 export default getDailyBets;
 

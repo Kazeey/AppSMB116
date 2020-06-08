@@ -193,13 +193,4 @@ app.get('/addUser/:number/:nom/:prenom/:mail/:mdp/:role/:cgucgv/:activation', fu
 app.get('/loginVerif/:idVerif/:mail/:date/:nbEssai', function (req, res) {});
 
 // ------------- Au lancement du serveur, insère les informations de l'api dans la base de données -------------//
-app.listen(3000, function() {
-  console.log(getAllBetsImport.data);
-  console.log(loginImport.data);
-  console.log(betByIdImport.data);
-  console.log(statsImport.data);
-  console.log(sportsImport.data);
-  console.log(profileImport.data);
-
-
-});
+app.listen(3000, function() {});

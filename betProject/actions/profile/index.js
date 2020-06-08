@@ -10,7 +10,6 @@ const getProfile = async(userId) => {
             'Accept': 'application/json'
         },
         }).then(res => {
-            console.log('res', res)
         }).catch(error => {
             this.error = error.message || error.error
         })

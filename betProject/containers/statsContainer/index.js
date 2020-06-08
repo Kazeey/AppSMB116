@@ -30,7 +30,6 @@ function statsContainer({ navigation }) {
           Go to Home
         </Button>
         {
-          console.log('myStats', myStats)
         }
       </View>
     );
