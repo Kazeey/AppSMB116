@@ -17,13 +17,11 @@ const getData = async () => {
 
 function profileContainer({ navigation }) {
     const userId = getData();
-    console.log('userId', userId);
     const profileInfo = getProfile(userId);
     return (
       <View>
           {headerComponent(navigation, 'Profile')}
           {
-            console.log('profileInfo', profileInfo)
             //profileInfo.name
             //profileInfo.firstname
             //...

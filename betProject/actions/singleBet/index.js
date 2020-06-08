@@ -17,7 +17,6 @@ const saveNewBet = async(title, date) => {
             'newBet': newBet,
         }
         }).then(res => {
-            console.log('res', res)
         }).catch(error => {
             this.error = error.message || error.error
         })
