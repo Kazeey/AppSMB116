@@ -25,7 +25,7 @@ let methods = {
           docs.forEach(doc => {   // Pour chaque sport, l'insère dans le tableau 
             data.push(doc.data())
           });
-          res.send(data); // Envoie tout au front
+          res.send({response : data}); // Envoie tout au front
         });
     },
 

@@ -64,6 +64,7 @@ app.get('/getSports', sportsImport.data.getSports);
 //profile
 app.get('/api/getAllProfileUsers/', profileImport.data.getAllUsers);
 app.get('/api/getOneProfileUsers/:userId', profileImport.data.getOneUserByID);
+app.get('/api/profile/getRole/:userId', profileImport.data.getRole);
 
 // ------------- Insère tous les sports de l'api dans la BDD -------------//
 app.get('/addSports', function (req, res) {
@@ -171,26 +172,6 @@ app.get('/addBets', async function(req, res) {
     });
   });
 });
-
-// ------------- Permet d'insérer les données d'un utilisateur, en fonction des paramètres -------------//
-app.get('/addUser/:number/:nom/:prenom/:mail/:mdp/:role/:cgucgv/:activation', function (req, res) {
-  let data = { // Formatage des données pour la table Users
-    nom: req.params.nom,
-    prenom: req.params.prenom,
-    mail: req.params.mail,
-    MDP: req.params.mdp,
-    role : req.params.role,
-    cguCgv: req.params.cgucgv,
-    activation: req.params.activation,
-    idUser: req.params.number
-  };
-
-  let Bets = db.collection('User').doc(`${req.params.number}`).set(data); // Ajout des données en base
-});
-
-
-
-app.get('/loginVerif/:idVerif/:mail/:date/:nbEssai', function (req, res) {});
 
 // ------------- Au lancement du serveur, insère les informations de l'api dans la base de données -------------//
 app.listen(3000, function() {});

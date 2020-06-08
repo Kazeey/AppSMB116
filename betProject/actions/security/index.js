@@ -9,9 +9,10 @@ const checkRole = async(userId) => {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
         },
-        }).then(res => {
-        }).catch(error => {
-            this.error = error.message || error.error
         })
+        .then(res => res.json())
+        .then(data => {
+            return data.response
+        });
 }
 export default checkRole;

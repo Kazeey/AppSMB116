@@ -6,8 +6,6 @@ import headerComponent from '../../components/header/index';
 import { Card, ListItem, Button} from 'react-native-elements'
 
 import getDailyBets from '../../actions/dailyBets';
-import checkRole from '../../actions/security'
-
 
 //Récupération des variables du react navigation
 const getData = async () => {

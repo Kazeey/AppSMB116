@@ -44,6 +44,19 @@ let methods = {
             return res.status(400).json({"message":"Unable to connect to Firestore."});
         });
     },
+
+    getRole : function(req, res){
+        const data = [];
+    
+        let bddDocument = db.collection('User').where('userId', '==', req.params.userId);
+        bddDocument.get() // Récupère le role de l'utilisateur
+        .then(docs => {
+          docs.forEach(doc => {   // Pour chaque utilisateurs, l'insère dans le tableau 
+            data.push(doc.data())
+          });
+          res.send({response : data}); // Envoie tout au front
+        });
+    }
 }
 
 exports.data = methods;
