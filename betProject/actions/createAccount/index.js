@@ -17,7 +17,7 @@ const createAccount = async (name, firstname, username, mail, setMessage) => {
     })
     .then(res => res.json())
     .then(data => {
-        // TO DO : ajouter message retour réponse
+        setMessage(data.response);
         return data.response
     });
     return resp;

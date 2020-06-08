@@ -36,7 +36,7 @@ const verifInput = (name, firstname, username, mail, setAuth) => {
     const indexOfPoint = mail.indexOf('.', indexOfAt);
     
     if( indexOfAt > 0 && indexOfPoint > 0) {
-      createAccount(name, firstname, username, mail);
+      createAccount(name, firstname, username, mail, setAuth);
     }
     else {
       setAuth("Le format de l'addresse mail inscrite est incorrect ! Veuillez la modifier.");
