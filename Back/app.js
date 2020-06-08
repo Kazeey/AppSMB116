@@ -4,6 +4,7 @@ const fetch = require("node-fetch");
 const cors = require('cors');
 const nodemailer = require("nodemailer");
 const bodyParser = require('body-parser');
+const moment = require('moment');
 
 const key = "8f0736cf5aa618c9903b9f96973b3b59";
 const allSports = "https://api.the-odds-api.com/v3/sports/?all=true&apiKey="+key;
@@ -34,7 +35,6 @@ const profileImport = require('./functions/profile/index.js');
 //---------------------Déclaration des APIs----------------------
 
 //Login
-
 app.get('/addStats/:id/:idUser/:oddsAverageAll/:nbWinAll/:moneyEarnAll/:nameSport/:nbWin/:odds/:moneyEarn/:percentageWin', loginImport.data.authentification);
 app.post('/api/login/authentification', loginImport.data.authentification);
 app.post('/api/login/resetPassword', loginImport.data.resetPassword);
@@ -42,6 +42,7 @@ app.post('/api/login/createAccount', loginImport.data.createAccount);
 
 //Bets
 app.get('/api/getBets', getAllBetsImport.data.getAllBets);
+app.post('/api/dailyBets', getAllBetsImport.data.getDailyBets);
 
 //BetById
 app.get('/api/betById/:betId', betByIdImport.data.getBetById);
@@ -52,7 +53,7 @@ app.put('/api/betById/:betId',  betByIdImport.data.putBetById);
 //stats
 app.get('/api/stats', statsImport.data.getOneStatByID);
 app.post('/api/stats', statsImport.data.addStats);
-app.get('/getStats', statsImport.data.getAllStats);
+app.get('/api/getStats', statsImport.data.getAllStats);
 
 //statById
 // app.get('/api/stat/:userId', getStatById(req, res))
@@ -94,7 +95,7 @@ app.get('/addBets', async function(req, res) {
     docs.forEach(doc => {   // Pour chaque sport, l'insère dans le tableau 
       const data = [];
       let docData = doc.data();
-      var url = 'https://api.the-odds-api.com/v3/odds/?sport='+docData.sportKey+'&region=uk&mkt=h2h&apiKey='+key;
+      var url = 'https://api.the-odds-api.com/v3/odds/?sport=upcoming&region=uk&mkt=h2h&apiKey='+key;
       let settings = { method: "Get" };
 
       // On parcours les données renvoyées par l'api
@@ -146,13 +147,13 @@ app.get('/addBets', async function(req, res) {
 
             if(!findInDocument) {
               let data = {  // Formatage des données avant insertion dans la base
-                startTime: jsonData.commence_time,
+                startTime: moment.unix(jsonData.commence_time).format("DD-MM-YYYY"),
                 homeTeam: jsonData.home_team,
                 teamOne:jsonData.teams[0],
                 teamTwo: jsonData.teams[1],
                 site : arraySites,
                 sport: jsonData.sport_nice,
-                idBet: nbDocuments,
+                betId: nbDocuments,
               };
 
               nbDocuments++; // Incrémentation du nombre de paris présent en base pour l'ID

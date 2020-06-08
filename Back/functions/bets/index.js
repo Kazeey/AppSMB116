@@ -16,10 +16,10 @@ app.use(cors())
 
 let methods = {
     
-    getAllBets : function (req,res) {
+    getAllBets : async function (req,res) {
         const data = [];
     
-        let bddDocument = db.collection('Bet');
+        let bddDocument = await db.collection('Bet');
         bddDocument.get() // Récupère tous les sports
         .then(docs => {
           docs.forEach(doc => {   // Pour chaque sport, l'insère dans le tableau 
@@ -27,6 +27,19 @@ let methods = {
           });
           res.send(data); // Envoie tout au front
         });
+    },
+
+    getDailyBets : async function(req, res) {
+      const data = [];
+      console.log(req.body.data);
+      let bddDocument = await db.collection('Bet').where('startTime', '==', req.body.date);
+      bddDocument.get() // Récupère tous les sports
+      .then(docs => {
+        docs.forEach(doc => {   // Pour chaque sport, l'insère dans le tableau 
+          data.push(doc.data())
+        });
+        res.send({response : data}); // Envoie tout au front
+      });
     }
 }
 
