@@ -33,7 +33,7 @@ function profileContainer({ navigation }) {
       style={styles.backgroundImg}
       >
         <View>
-            {headerComponent(navigation, 'Profile')}
+            {headerComponent(navigation, 'Profil')}
             {
               //profileInfo.name
               //profileInfo.firstname

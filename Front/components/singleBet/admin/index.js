@@ -64,7 +64,7 @@ function singleBetAdminComponent(bet) {
     const [equality, setEquality] = React.useState(false);   
     const [betId, setBetId] = React.useState(bet.betId);   
     const [authError, setAuth] = React.useState(false);
-    console.log(bet)
+    
     return (
         <View>
             <Input
@@ -105,34 +105,36 @@ function singleBetAdminComponent(bet) {
                 leftIconContainerStyle={styles.loginInputIcon}
                 value={description}
                 onChange={(newValue)=> setDescription(newValue.target.value)}
-                leftIcon={{type:'font-awesome', name: 'percent'}} // icone de l'input
+                leftIcon={{type:'font-awesome', name: 'book'}} // icone de l'input
             />
-            {bet.site.map((siteProno) => {
-                    return(
-                        <Card 
-                            key={siteProno.siteKey}
-                            title={siteProno.siteKey}                            
-                        >
-                            <ListItem
+            <Card 
+                title="Pronostiqueurs"                            
+            >
+                {bet.site.map((siteProno) => {
+                        return(
+                            <Card 
                                 key={siteProno.siteKey}
-                                subtitle={
-                                    <View>
-                                        <Text>
-                                            Cote de {teamOne} : {siteProno.valueOne}
-                                            {"\n"}
-                                            {<hr></hr>}
-                                            Cote de {teamTwo} : {siteProno.valueTwo}
-                                        </Text>
-                                    </View>
-                                }
-                                bottomDivider
-                            />
-                        </Card>
-                    )
-                } 
-            )}
-            <Text>
-            </Text>
+                                title={siteProno.siteKey}                            
+                            >
+                                <ListItem
+                                    key={siteProno.siteKey}
+                                    subtitle={
+                                        <View>
+                                            <Text>
+                                                Cote de {teamOne} : {siteProno.valueOne}
+                                                {"\n"}
+                                                {<hr></hr>}
+                                                Cote de {teamTwo} : {siteProno.valueTwo}
+                                            </Text>
+                                        </View>
+                                    }
+                                    bottomDivider
+                                />
+                            </Card>
+                        )
+                    } 
+                )}
+            </Card>
             <Card 
                 title="État du match"                            
             >
