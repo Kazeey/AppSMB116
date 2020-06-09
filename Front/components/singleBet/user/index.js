@@ -15,5 +15,5 @@ function singleBetUserComponent() {
     )
 }
     
-  export default singleBetUserComponent;  
+export default singleBetUserComponent;  
     

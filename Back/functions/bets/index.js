@@ -46,12 +46,12 @@ let methods = {
         sport: req.body.sport,
         startTime: req.body.date,
         homeTeam: req.body.homeTeam,
-        site : {
+        site : [{
           mean : req.body.mean,
           valueOne : req.body.valueOne,
           valuetwo : req.body.valueTwo,
           siteKey : "TvsProno"
-        },
+        }],
         betId : random,
       };
       

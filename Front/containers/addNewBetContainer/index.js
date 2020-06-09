@@ -57,6 +57,7 @@ const verifInput = (teamOne, teamTwo, sport, date, valueOne, valueTwo, homeTeamO
     {
       mean = ((floatCoteOne + floatCoteTwo) / 2); // créer la moyenne des cotes 
       createBet(teamOne, teamTwo, sport, date, valueOne, valueTwo, mean, homeTeam, setAuth); // fonction de création de pari
+      
     }
   }
 }

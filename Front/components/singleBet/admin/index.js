@@ -12,25 +12,17 @@ const styles = StyleSheet.create({
     },
 });
 
-function verifInput(teamOne, teamTwo, sport, date, description, stateBet, setAuth) {
+function verifInput(teamOne, teamTwo, sport, date, description, winner, stateBet, setAuth) {
     const indexOfSlash = date.indexOf('/'); // vérifie la présence d'un '/' dans la date pour laisser le format au DD-MM-YYYY et non pas DD/MM/YYYY
-
+    let resultat;
     // TO DO : vérifier la présence de lettre dans le champ
-    
     if( indexOfSlash > 0) // s'il y a un slash dans la date, renvoi un message d'erreur
     {
       setAuth("Le format de la date n'est pas valide (DD-MM-YYYY).");
     } 
     else 
     {  
-        // if()
-        // {
-        //     gagné, perdu, égalité, 
-        // } 
-        // else 
-        // {    
-        //    setAuth("Le format de la date n'est pas valide (DD-MM-YYYY).");
-        // }
+        updateBet(teamOne, teamTwo, sport, date, description, winner, stateBet, setAuth)
     }
 }
 
@@ -45,9 +37,8 @@ function singleBetAdminComponent(bet) {
     const [valueTwo, setValueTwo] = React.useState(bet.valueTwo);           
     const [description, setDescription] = React.useState('');           
     const [stateBet, setStateBet] = React.useState('');              
-    const [victoryTeamOne, setVictoryTeamOne] = React.useState(false);   
-    const [victoryTeamTwo, setVictoryTeamTwo] = React.useState(false);           
-    const [equality, setEquality] = React.useState(false);           
+    const [winner, setWinner] = React.useState('');   
+    const [betId, setBetId] = React.useState(bet.betId);   
     const [authError, setAuth] = React.useState(false);
 
     return (
@@ -125,49 +116,45 @@ function singleBetAdminComponent(bet) {
                 } 
             )}
             <Text>
-                Vainqueur :
             </Text>
-            <CheckBox 
-                title= { teamOne }
-                checked={victoryTeamOne} 
-                onPress={() => {
-                    setVictoryTeamOne(true) 
-                    setVictoryTeamTwo(false)
-                    setEquality(false)
+            <Card 
+                title="État du match"                            
+            >
+                <CheckBox 
+                    title= { teamOne }
+                    checked={winner === teamOne} 
+                    onPress={() => {
+                            setWinner(teamOne)
+                        }
                     }
-                }
-            />
-            <CheckBox 
-                title= { teamTwo }
-                checked={victoryTeamTwo} 
-                onPress={() => {
-                    setVictoryTeamOne(false) 
-                    setVictoryTeamTwo(true)
-                    setEquality(false)
+                />
+                <CheckBox 
+                    title= { teamTwo }
+                    checked={winner === teamTwo} 
+                    onPress={() => {
+                            setWinner(teamTwo)
+                        }
                     }
-                }
-            />
-            <CheckBox 
-                title= "Égalité"
-                checked={equality} 
-                onPress={() => {
-                    setVictoryTeamOne(false) 
-                    setVictoryTeamTwo(false)
-                    setEquality(true)
+                />
+                <CheckBox 
+                    title= "Égalité"
+                    checked={winner === 'equality'} 
+                    onPress={() => {
+                            setWinner('equality')
+                        }
                     }
-                }
-            />
+                />
+            </Card>
             {
                 // Affichage des messages d'erreur
                 authError && errorMessageComponent(authError)     
             }
-            
             <Button
                 title='Mettre à jour le pari'
                 containerStyle={styles.updateButton}
                 // Vérifie qu'aucun des champs n'est vide avant de permettre à l'utilisateur de cliquer sur le bouton de création de paris
-                disabled={teamOne === '' || teamTwo === '' || sport === '' || date === '' || description === ''|| stateBet === ''}
-                onPress={() => verifInput(teamOne, teamTwo, sport, date, description, stateBet, setAuth)}
+                disabled={teamOne === '' || teamTwo === '' || sport === '' || date === '' || description === ''|| stateBet === '' || winner === false}
+                onPress={() => verifInput(teamOne, teamTwo, sport, date, description, stateBet, winner, setAuth)}
             >
             </Button>
         </View>
