@@ -16,14 +16,14 @@ const styles = StyleSheet.create({
   });
 
 function errorMessageComponent(errorMessage) {
-      return (
-          <View style={styles.errorMessageWrapper}> 
-              <Text style={styles.errorMessageText}>
-                {errorMessage}
-                </Text>
-          </View>
-      )
-    }
+  return (
+      <View style={styles.errorMessageWrapper}> 
+          <Text style={styles.errorMessageText}>
+            {errorMessage}
+            </Text>
+      </View>
+  )
+}
     
   export default errorMessageComponent;  
     

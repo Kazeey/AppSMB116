@@ -66,7 +66,8 @@ app.get('/api/getAllProfileUsers/', profileImport.data.getAllUsers); // Récupé
 app.get('/api/getOneProfileUsers/:userId', profileImport.data.getOneUserByID); // Récupération d'un profil utilisateur avec un ID
 app.get('/api/profile/getRole/:userId', profileImport.data.getRole); // Récupération du role d'un utilisateur grâce à un ID
 
-// ------------- Les deux fonctions qui suivent ne sont pas dans des fontions comme les précédentes car nous avons décidé de les appeler manuellement, cependant il faudrait le faire ----------------//
+// TODO : check le role, sécurité role
+// ------------- TO DO : Les deux fonctions qui suivent ne sont pas dans des fontions comme les précédentes car nous avons décidé de les appeler manuellement, cependant il faudrait le faire ----------------//
 // ------------- Insère tous les sports de l'api dans la BDD -------------//
 app.get('/addSports', function (req, res) {
     let nbSport;

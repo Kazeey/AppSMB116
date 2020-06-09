@@ -1,9 +1,11 @@
 import * as React from 'react';
-import { ScrollView, View, StyleSheet } from 'react-native';
-
+import { ScrollView, View, StyleSheet,ImageBackground } from 'react-native';
 import { Card, ListItem, Button} from 'react-native-elements'
+
 import headerComponent from '../../components/header/index';
 import AsyncStorage from '@react-native-community/async-storage';
+
+import backgroundOnPages from '../../utils/picture/backgroundPage.png';
 
 // Imports des fonctions de communications avec le back
 import getAllBets from '../../actions/bets';
@@ -14,6 +16,9 @@ const styles = StyleSheet.create({
     margin: 10 + 'px',
     backgroundColor: '#4faa7c',
     color: 'white',
+  },
+  backgroundImg:{
+    flex: 1,
   },
   addNewButton: {
     margin: 10 + 'px',
@@ -45,45 +50,51 @@ function betsContainer({ navigation }) {
   },[])
   
     return (
-      <ScrollView >
-        {headerComponent(navigation, "Liste des paris")}
-        {
-          allBets.map((allBet)=> {
-            return (
-              <View key={allBet.betId}>
-                <Card
-                key={allBet.betId}
-                title={allBet.teamOne + ' vs ' + allBet.teamTwo} // Titre du pari
-                >
-                <ListItem
-                    key={allBet.betId}
-                    subtitle={
-                      <View>
-                        <Button // Voir plus d'informations concernant le pari
-                          title='Voir plus'
-                          buttonStyle={styles.seeMoreButton}
-                          onClick={() => navigation.navigate('singleBetContainer', {singleBet: allBet})}
-                        >
-                        </Button>
-                      </View>
-                    }
-                    bottomDivider
-                />
-                </Card>
-              </View>
-            )
-          })
-        }
-        {
-          // Si le role de l'utilisateur est "admin", alors il pourra voir le bouton, pour rajouter un pari
-          role === "admin" && <Button
-          title='Ajouter un nouveau Pari'
-          buttonStyle={styles.addNewButton}
-          onClick={() => navigation.navigate('addNewBetContainer')}
-          >
-          </Button>
-        }
-      </ScrollView>
+      <ImageBackground 
+      source={backgroundOnPages}
+      style={styles.backgroundImg}
+      >
+        <ScrollView >
+          {headerComponent(navigation, "Liste des paris")}
+          {
+            allBets.map((allBet)=> {
+              const title = allBet.teamOne + ' VS ' + allBet.teamTwo ;
+              return (
+                <View key={allBet.betId}>
+                  <Card
+                  key={allBet.betId}
+                  title={title} // Titre du pari
+                  >
+                  <ListItem
+                      key={allBet.betId}
+                      subtitle={
+                        <View>
+                          <Button // Voir plus d'informations concernant le pari
+                            title='Voir plus'
+                            style={styles.seeMoreButton}
+                            onClick={() => navigation.navigate('singleBetContainer', {singleBet: allBet, role : role})}
+                          >
+                          </Button>
+                        </View>
+                      }
+                      bottomDivider
+                  />
+                  </Card>
+                </View>
+              )
+            })
+          }
+          {
+            // Si le role de l'utilisateur est "admin", alors il pourra voir le bouton, pour rajouter un pari
+            role === "admin" && <Button
+            title='Ajouter un nouveau Pari'
+            style={styles.addNewButton}
+            onClick={() => navigation.navigate('addNewBetContainer')}
+            >
+            </Button>
+          }
+        </ScrollView>
+      </ImageBackground>
     );
   }
   export default betsContainer;
