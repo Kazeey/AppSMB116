@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Button} from 'react-native-elements'
+import { Button} from 'react-native-elements';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import headerComponent from '../../components/header/index';
 

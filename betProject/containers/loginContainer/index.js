@@ -1,14 +1,17 @@
 import * as React from 'react';
 import {View, StyleSheet,  } from 'react-native';
 
-import { Input, Button, Text } from 'react-native-elements';
+import { Input, Button, Text, ImageBackground } from 'react-native-elements';
 
 import AsyncStorage from '@react-native-community/async-storage';
 
 import { Image } from 'react-native-elements';
 
-import loginImage from '../../utils/picture/loginImage.jpg';
+import loginImage from '../../utils/picture/loginImage.png';
+import backgroundImage from '../../utils/picture/background.png';
 import errorMessageComponent from '../../components/text/errorMessage/index';
+
+// Imports des fonctions de communications avec le back
 import authentification from '../../actions/authentification';
 import resetPassword from '../../actions/resetPassword';
 
@@ -67,56 +70,53 @@ function loginContainer({ navigation }) {
 
     return (
       <View style={styles.loginWrapper}>
-        {
-          //TODO CHANGEZ L'IMAGE PAR LE VRAI LOGO
-        }
-        <Image
-          source={{ uri: loginImage }}
-          containerStyle={styles.loginImage}
-        />
-        <Input
-          placeholder='Username'
-          inputContainerStyle={styles.loginInput}
-          leftIconContainerStyle={styles.loginInputIcon}
-          value={username}
-          onChange={(newValue)=> setUsername(newValue.target.value)}
-          leftIcon={{type:'font-awesome', name: 'user'}}
-        />
-        <Input
-          placeholder='Password'
-          inputContainerStyle={styles.loginInput}
-          leftIconContainerStyle={styles.loginInputIcon}
-          value={password}
-          onChange={(newValue)=> setPassword(newValue.target.value)}
-          leftIcon={{type:'font-awesome', name: 'lock'}}
-          secureTextEntry={true}
-        />
-        {
-          authError && errorMessageComponent(authError)
-        }
-        {
-          //TODO: Connexion avec Google / Facebook avec JWT
-        }
-        <Button
-          title='Se connecter'
-          containerStyle={styles.loginButton}
-          disabled={password === '' || username===''}
-          onPress={() => login(username, password, setAuth, navigation)}
-        >
-        </Button>
-        <Button
-          title='Mot de passe oublié'
-          containerStyle={styles.loginButton}
-          disabled={username===''}
-          onPress={() => resetPassword(username, setAuth)}
-        >
-        </Button>
-        <Button
-          title='Créer un compte'
-          containerStyle={styles.loginButton}
-          onPress={() => navigation.navigate('createNewAccountContainer')}
-        >
-        </Button>
+          <Image
+            source={{ uri: loginImage }}
+            containerStyle={styles.loginImage}
+          />
+          <Input
+            placeholder='Username'
+            inputContainerStyle={styles.loginInput}
+            leftIconContainerStyle={styles.loginInputIcon}
+            value={username}
+            onChange={(newValue)=> setUsername(newValue.target.value)}
+            leftIcon={{type:'font-awesome', name: 'user'}}
+          />
+          <Input
+            placeholder='Password'
+            inputContainerStyle={styles.loginInput}
+            leftIconContainerStyle={styles.loginInputIcon}
+            value={password}
+            onChange={(newValue)=> setPassword(newValue.target.value)}
+            leftIcon={{type:'font-awesome', name: 'lock'}}
+            secureTextEntry={true}
+          />
+          {
+            authError && errorMessageComponent(authError)
+          }
+          {
+            //TODO: Connexion avec Google / Facebook avec JWT
+          }
+          <Button
+            title='Se connecter'
+            containerStyle={styles.loginButton}
+            disabled={password === '' || username===''}
+            onPress={() => login(username, password, setAuth, navigation)}
+          >
+          </Button>
+          <Button
+            title='Mot de passe oublié'
+            containerStyle={styles.loginButton}
+            disabled={username===''}
+            onPress={() => resetPassword(username, setAuth)}
+          >
+          </Button>
+          <Button
+            title='Créer un compte'
+            containerStyle={styles.loginButton}
+            onPress={() => navigation.navigate('createNewAccountContainer')}
+          >
+          </Button>
       </View>
     );
 }

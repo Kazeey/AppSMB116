@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { ScrollView, View, StyleSheet } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import headerComponent from '../../components/header/index';
 
 import { Card, ListItem, Button} from 'react-native-elements'
 
+// Imports des fonctions de communications avec le back
 import getDailyBets from '../../actions/dailyBets';
 
 //Récupération des variables du react navigation
@@ -38,14 +40,14 @@ function dailyBetsContainer({ navigation }) {
               <View key={dailyBet.betId}>
                 <Card
                 key={dailyBet.betId}
-                title={dailyBet.teamOne + ' vs ' + dailyBet.teamTwo}
+                title={dailyBet.teamOne + ' vs ' + dailyBet.teamTwo} // Titre du pari
                 >
                 <ListItem
                     key={dailyBet.betId}
                     subtitle={
                       <View>
                         <Button
-                          title='Voir plus'
+                          title='Voir plus' // Bouton pour avoir plus d'informations sur le pari 
                           onClick={() => navigation.navigate('singleBetContainer', {singleBet: dailyBet})}
                         >
                         </Button>

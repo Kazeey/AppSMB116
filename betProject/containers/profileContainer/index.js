@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 import headerComponent from '../../components/header/index';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import getProfile from '../../actions/profile';
 

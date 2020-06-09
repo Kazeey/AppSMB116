@@ -3,13 +3,9 @@ const app = express();
 const fetch = require("node-fetch");
 const cors = require('cors');
 
-const key = "8f0736cf5aa618c9903b9f96973b3b59";
-const allSports = "https://api.the-odds-api.com/v3/sports/?all=true&apiKey="+key;
-const urlUpcoming = ""+key;
-
 let admin = require("firebase-admin");
 
-let serviceAccount = require("../../tvsprono-dab6b-firebase-adminsdk-8legt-1a75d8f5c7.json");
+let serviceAccount = require("../../tvsprono-dab6b-firebase-adminsdk-8legt-1a75d8f5c7.json"); // Fichier de config de Firebase
 
 const db = admin.firestore();
 app.use(cors())
@@ -17,7 +13,7 @@ app.use(cors())
 let methods = {
     // ------------- Liste un certain pari en fonction du "number", de la BDD et les envoies vers le front -------------//
     getBetById : function(req, res){
-        let Bets = db.collection('Bet').doc(req.params.betId);
+        let Bets = db.collection('Bet').doc(req.params.betId); // Récupère le paramètre betId depuis une requête Get
         let getDoc = Bets.get();
         
         getDoc
@@ -35,7 +31,7 @@ let methods = {
 
     // ------------- Permet d'ajouter une description et un etat à un pari, en fonction des paramètres -------------//
     putBetById : function(req, res){
-        let Bets = db.collection('App').doc(req.params.betId);
+        let Bets = db.collection('App').doc(req.params.betId); // Récupère le paramètre betId depuis une requête Get
         let updateSingle = { // Mise à jour des données en base
           description : req.params.description,
           etatBet : req.params.etat

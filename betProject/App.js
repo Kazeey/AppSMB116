@@ -20,6 +20,7 @@ const Stack = createStackNavigator();
 
 const Tab = createMaterialBottomTabNavigator();
 
+// Déclaration des routes de navigation
 function Home(){
   return (   
     <Tab.Navigator>

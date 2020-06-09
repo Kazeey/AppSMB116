@@ -6,12 +6,12 @@ import { baseUrlApi } from '../../utils/constant/index';
 //By the SSL protocol
 const authentification = async (username, password) => {
     const resp = await fetch(baseUrlApi+'login/authentification', {
-    method: 'POST',
+    method: 'POST', 
     headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
     },
-    body: JSON.stringify({
+    body: JSON.stringify({ // Données à envoyer au back
         'username': username,
         'password': password,
     })

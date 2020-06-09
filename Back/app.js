@@ -6,9 +6,8 @@ const nodemailer = require("nodemailer");
 const bodyParser = require('body-parser');
 const moment = require('moment');
 
-const key = "8f0736cf5aa618c9903b9f96973b3b59";
-const allSports = "https://api.the-odds-api.com/v3/sports/?all=true&apiKey="+key;
-const urlUpcoming = ""+key;
+const key = "8f0736cf5aa618c9903b9f96973b3b59"; // Clé de l'api
+const allSports = "https://api.the-odds-api.com/v3/sports/?all=true&apiKey="+key; // Récupération des sports
 
 let admin = require("firebase-admin");
 
@@ -36,36 +35,38 @@ const profileImport = require('./functions/profile/index.js');
 
 //Login
 app.get('/addStats/:id/:idUser/:oddsAverageAll/:nbWinAll/:moneyEarnAll/:nameSport/:nbWin/:odds/:moneyEarn/:percentageWin', loginImport.data.authentification);
-app.post('/api/login/authentification', loginImport.data.authentification);
-app.post('/api/login/resetPassword', loginImport.data.resetPassword);
-app.post('/api/login/createAccount', loginImport.data.createAccount);
+app.post('/api/login/authentification', loginImport.data.authentification); // Authentification de l'utilisateur
+app.post('/api/login/resetPassword', loginImport.data.resetPassword); // Reset du mot de passe
+app.post('/api/login/createAccount', loginImport.data.createAccount); // Création du compte
 
 //Bets
-app.get('/api/getBets', getAllBetsImport.data.getAllBets);
-app.post('/api/dailyBets', getAllBetsImport.data.getDailyBets);
+app.get('/api/getBets', getAllBetsImport.data.getAllBets); // Récupération de tous les paris
+app.post('/api/dailyBets', getAllBetsImport.data.getDailyBets); // Récupération de tous les paris de la journée
+app.post('/api/createBet', getAllBetsImport.data.addBet); // Ajout d'un nouveau pari
 
 //BetById
-app.get('/api/betById/:betId', betByIdImport.data.getBetById);
+app.get('/api/betById/:betId', betByIdImport.data.getBetById); // Récupération d'un pari grâce à un ID
 // app.post('/api/betById/:betId', betByIdImport.data.postBetbyId); a FAIRE
-app.put('/api/betById/:betId',  betByIdImport.data.putBetById);
+app.put('/api/betById/:betId',  betByIdImport.data.putBetById); // Mise à jour d'un pari grâce à un ID
 // app.delete('/api/betById/:betId', betByIdImport.data.deleteBetbyId); a FAIRE
 
 //stats
-app.get('/api/stats', statsImport.data.getOneStatByID);
-app.post('/api/stats', statsImport.data.addStats);
-app.get('/api/getStats', statsImport.data.getAllStats);
+app.get('/api/stats', statsImport.data.getOneStatByID); // Récupération des statistiques d'un utilisateur grâce à un ID
+app.post('/api/stats', statsImport.data.addStats); // Ajout de statistiques
+app.get('/api/getStats', statsImport.data.getAllStats); // Récupération de toutes les statistiques
 
 //statById
 // app.get('/api/stat/:userId', getStatById(req, res))
 
 //sports
-app.get('/getSports', sportsImport.data.getSports);
+app.get('/getSports', sportsImport.data.getSports); // Récupération de la liste des sports de l'api
 
 //profile
-app.get('/api/getAllProfileUsers/', profileImport.data.getAllUsers);
-app.get('/api/getOneProfileUsers/:userId', profileImport.data.getOneUserByID);
-app.get('/api/profile/getRole/:userId', profileImport.data.getRole);
+app.get('/api/getAllProfileUsers/', profileImport.data.getAllUsers); // Récupération de tous les profils utilisateur
+app.get('/api/getOneProfileUsers/:userId', profileImport.data.getOneUserByID); // Récupération d'un profil utilisateur avec un ID
+app.get('/api/profile/getRole/:userId', profileImport.data.getRole); // Récupération du role d'un utilisateur grâce à un ID
 
+// ------------- Les deux fonctions qui suivent ne sont pas dans des fontions comme les précédentes car nous avons décidé de les appeler manuellement, cependant il faudrait le faire ----------------//
 // ------------- Insère tous les sports de l'api dans la BDD -------------//
 app.get('/addSports', function (req, res) {
     let nbSport;
@@ -129,7 +130,7 @@ app.get('/addBets', async function(req, res) {
                 arraySites.push(siteTmp);
               } else {  // Sinon récupération des cotes pour chaque site de paris et push dans un tableau
                 for(const site of jsonData.sites) {
-                  computedMean = ((site.odds.h2h[0] + site.odds.h2h[1]) / 2);
+                  computedMean = ((site.odds.h2h[0] + site.odds.h2h[1]) / 2); // Calcul de la moyenne 
                   const siteTmp = {
                     valueOne : site.odds.h2h[0],
                     mean : computedMean,
@@ -159,9 +160,9 @@ app.get('/addBets', async function(req, res) {
 
               nbDocuments++; // Incrémentation du nombre de paris présent en base pour l'ID
               let Bets = db.collection('Bet').doc(`${nbDocuments}`).set(data); // Insertion dans la base
-              console.log("insertion effectuée");
+              console.log("Insertion effectuée");
             } else {
-              console.log("ça existe déjà");
+              console.log("L'enregistrement existe déjà");
             }
           } 
         });
@@ -174,4 +175,4 @@ app.get('/addBets', async function(req, res) {
 });
 
 // ------------- Au lancement du serveur, insère les informations de l'api dans la base de données -------------//
-app.listen(3000, function() {});
+app.listen(3000, function() {}); // Ecoute sur le port 3000

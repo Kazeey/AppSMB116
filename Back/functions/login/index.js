@@ -6,10 +6,6 @@ const nodemailer = require("nodemailer");
 const bodyParser = require('body-parser');
 const { uuid } = require('uuidv4');
 
-const key = "8f0736cf5aa618c9903b9f96973b3b59";
-const allSports = "https://api.the-odds-api.com/v3/sports/?all=true&apiKey="+key;
-const urlUpcoming = ""+key;
-
 let admin = require("firebase-admin");
 
 let FieldValue = admin.firestore.FieldValue;
@@ -27,7 +23,7 @@ if(date < 10){
 if(month < 10){
     month = "0"+month;
 }
-let currentDate = date + "-" + month + "-" + year
+let currentDate = date + "-" + month + "-" + year // Création de la date courante
 
 let transporter = nodemailer.createTransport({
   service: 'Yahoo', // Service utilisé pour l'envoi de l'email
@@ -43,7 +39,7 @@ let methods = {
 
     // ------------- Permet d'insérer les infos de login verif -------------//
     authentification : async function(req, res){
-      let bddUser = db.collection('User').where("username", "==", req.body.username);
+      let bddUser = db.collection('User').where("username", "==", req.body.username); // Cherche tous les users ou le login correspond à la valeur récupérée depuis la méthode POST
       await bddUser.get()
       .then(async docs =>  {
         //Récupération des informations du users
@@ -66,7 +62,7 @@ let methods = {
         }
         else
         { 
-          //Cherche si il a déja essayer de se connecter sur la plateforme
+          //Cherche si l'utilisateur a déja essayer de se connecter sur la plateforme
           let bddVerif = db.collection('loginVerif').where("mail", "==", documentsUser.mail);
           const respVerif = await bddVerif.get()
           .then(async verifs => {
@@ -80,7 +76,7 @@ let methods = {
             // S'il y a plus de 5 essai retourne "blocked" et bloque le compte
             if(loginVerifInfo.length > 0 && loginVerifInfo[0].nbVerif > 4){              
               let changeStateToFalse = { 
-                state : false,
+                state : false, // bloque le comtpe en changeant l'état
               };
               let changeStateAccountBdd = db.collection('User').where("mail", "==", documentsUser.mail);
               await changeStateAccountBdd.get()
@@ -140,7 +136,7 @@ let methods = {
       
     },
 
-    createAccount : async function(req, res){  
+    createAccount : async function(req, res){  // Création d'un comtpe
       let tempPassword = Math.floor(Math.random() * 1000000) + 100000;
 
       let newAccount = {
@@ -152,7 +148,7 @@ let methods = {
         password : ""+tempPassword+"",
         role : "user",
         state : true,
-        userId : uuid(),
+        userId : uuid(), // Génération d'un ID aléatoire
       }
 
       var mailOptions = {

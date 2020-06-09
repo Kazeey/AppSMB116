@@ -5,6 +5,8 @@ import { Input, Button, Text } from 'react-native-elements';
 import errorMessageComponent from '../../components/text/errorMessage/index';
 
 import { Image } from 'react-native-elements';
+
+// Imports des fonctions de communications avec le back
 import createAccount from '../../actions/createAccount';
 
 //Declaration du style
@@ -12,12 +14,6 @@ const styles = StyleSheet.create({
   loginWrapper: {
     justifyContent: 'center',
     height:100+'%',
-  },
-  loginImage: {
-    width: 200,
-    height: 200,
-    alignSelf: 'center',
-    marginBottom: 80 + 'px',
   },
   loginInput: {
     margin: 20 + 'px',
@@ -31,26 +27,26 @@ const styles = StyleSheet.create({
 });
 
 const verifInput = (name, firstname, username, mail, setAuth) => {
-  if(mail) {
-    const indexOfAt = mail.indexOf('@');
-    const indexOfPoint = mail.indexOf('.', indexOfAt);
+  if(mail) { // vérifie la présence d'un mail
+    const indexOfAt = mail.indexOf('@'); // vérifie la présence d'un "@"
+    const indexOfPoint = mail.indexOf('.', indexOfAt); // vérifie la présence d'un "." après le "@", ce "." correspond au domaine qui gère l'envoi du mail
     
-    if( indexOfAt > 0 && indexOfPoint > 0) {
+    if( indexOfAt > 0 && indexOfPoint > 0) { // S'il y a un "@" et un "." après, alors lancement de la fonction de création de l'utilisateur
       createAccount(name, firstname, username, mail, setAuth);
     }
-    else {
+    else { // Sinon message d'erreur
       setAuth("Le format de l'addresse mail inscrite est incorrect ! Veuillez la modifier.");
     }
   }
 }
 
 function createNewAccountContainer({ navigation }) {
-
-    const [name, setName] = React.useState('');
-    const [firstname, setFirstname] = React.useState('');
-    const [username, setUsername] = React.useState('');
-    const [mail, setMail] = React.useState('');
-    const [authError, setAuth] = React.useState(false);
+                                                              // Champs :
+    const [name, setName] = React.useState('');               // name      -> Prénom de l'utilisateur
+    const [firstname, setFirstname] = React.useState('');     // firsntame -> Nom de l'utilisateur
+    const [username, setUsername] = React.useState('');       // username  -> Login de l'utilisateur
+    const [mail, setMail] = React.useState('');               // mail      -> Mail de l'utilisateur
+    const [authError, setAuth] = React.useState(false);   
 
     return (
       <View>
@@ -93,6 +89,7 @@ function createNewAccountContainer({ navigation }) {
             <Button
               title='Créer un compte'
               containerStyle={styles.loginButton}
+              // Vérifie que les inputs ne sont pas vides avant de permettre à l'utilisateur de cliquer sur le bouton
               disabled={name === '' || firstname === '' || username === '' || mail === ''}
               onPress={() => verifInput(name, firstname, username, mail, setAuth)}
             >

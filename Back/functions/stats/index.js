@@ -16,6 +16,7 @@ app.use(cors())
 
 
 let methods = {
+// ---------------- Récupère toutes les stats et les envoie au front ------------------//
     getAllStats : function(req, res){
         let Bets = db.collection('Stats');
         let getDoc = Bets.get();
