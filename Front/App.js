@@ -22,8 +22,13 @@ const Tab = createMaterialBottomTabNavigator();
 
 // Déclaration des routes de navigation
 function Home(){
-  return (   
-    <Tab.Navigator>
+  return (
+      <Tab.Navigator
+        tabBarOptions={{
+          activeTintColor: 'red',
+          inactiveTintColor: 'green',
+        }}
+      >
       <Tab.Screen 
         name="homeContainer"
         component={homeContainer}

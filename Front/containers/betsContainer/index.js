@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ScrollView, View } from 'react-native';
+import { ScrollView, View, StyleSheet } from 'react-native';
 
 import { Card, ListItem, Button} from 'react-native-elements'
 import headerComponent from '../../components/header/index';
@@ -9,6 +9,18 @@ import AsyncStorage from '@react-native-community/async-storage';
 import getAllBets from '../../actions/bets';
 import checkRole from '../../actions/security';
 
+const styles = StyleSheet.create({
+  seeMoreButton:{
+    margin: 10 + 'px',
+    backgroundColor: '#4faa7c',
+    color: 'white',
+  },
+  addNewButton: {
+    margin: 10 + 'px',
+    backgroundColor: '#4faa7c',
+    color: 'white',
+  }
+});
 // récupération de l'id de l'utilisateur stocké lors de la connexion
 const getData = async () => {
   try {
@@ -49,6 +61,7 @@ function betsContainer({ navigation }) {
                       <View>
                         <Button // Voir plus d'informations concernant le pari
                           title='Voir plus'
+                          buttonStyle={styles.seeMoreButton}
                           onClick={() => navigation.navigate('singleBetContainer', {singleBet: allBet})}
                         >
                         </Button>
@@ -65,6 +78,7 @@ function betsContainer({ navigation }) {
           // Si le role de l'utilisateur est "admin", alors il pourra voir le bouton, pour rajouter un pari
           role === "admin" && <Button
           title='Ajouter un nouveau Pari'
+          buttonStyle={styles.addNewButton}
           onClick={() => navigation.navigate('addNewBetContainer')}
           >
           </Button>

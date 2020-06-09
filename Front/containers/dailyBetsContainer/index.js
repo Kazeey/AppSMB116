@@ -9,17 +9,13 @@ import { Card, ListItem, Button} from 'react-native-elements'
 // Imports des fonctions de communications avec le back
 import getDailyBets from '../../actions/dailyBets';
 
-//Récupération des variables du react navigation
-const getData = async () => {
-  try {
-    const value = await AsyncStorage.getItem('@userId')
-    if(value !== null) {
-      return value;
-    }
-  } catch(e) {
-    // error reading value
+const styles = StyleSheet.create({
+  seeMoreButton:{
+    margin: 10 + 'px',
+    backgroundColor: '#4faa7c',
+    color: 'white',
   }
-}
+});
 
 function dailyBetsContainer({ navigation }) {
 
@@ -48,6 +44,7 @@ function dailyBetsContainer({ navigation }) {
                       <View>
                         <Button
                           title='Voir plus' // Bouton pour avoir plus d'informations sur le pari 
+                          buttonStyle={styles.seeMoreButton}
                           onClick={() => navigation.navigate('singleBetContainer', {singleBet: dailyBet})}
                         >
                         </Button>

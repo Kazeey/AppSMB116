@@ -6,6 +6,7 @@ function headerComponent(navigation, pageName){
     return(
         //TODO Effet header scroll up scroll down : https://github.com/janicduplessis/collapsible-navbar/blob/master/main.js
         <Header
+        backgroundColor="#4faa7c"
         leftComponent={
           <Icon
             name='arrow-left'
