@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
   loginButton: {
     margin: 10 + 'px',
     backgroundColor: '#4faa7c',
+    color: 'white',
   },
   buttonForgotPassword:{
     margin: 10 + 'px',
@@ -44,6 +45,8 @@ const styles = StyleSheet.create({
   },
   buttonNewAccount: { 
     margin: 10 + 'px',
+    backgroundColor: '#4faa7c',
+    color: 'white',
   },
   backgroundImg:{
     flex: 1,
@@ -115,7 +118,7 @@ function loginContainer({ navigation }) {
             }
             <Button
               title='Se connecter'
-              containerStyle={styles.loginButton}
+              buttonStyle={styles.loginButton}
               disabled={password === '' || username===''}
               onPress={() => login(username, password, setAuth, navigation)}
             >
@@ -130,8 +133,7 @@ function loginContainer({ navigation }) {
             </Button>
             <Button
               title='Créer un compte'
-              type="outline"
-              containerStyle={styles.buttonNewAccount}
+              buttonStyle={styles.buttonNewAccount}
               onPress={() => navigation.navigate('createNewAccountContainer')}
             >
             </Button>
