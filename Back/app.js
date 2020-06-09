@@ -47,7 +47,7 @@ app.post('/api/createBet', getAllBetsImport.data.addBet); // Ajout d'un nouveau 
 //BetById
 app.get('/api/betById/:betId', betByIdImport.data.getBetById); // Récupération d'un pari grâce à un ID
 // app.post('/api/betById/:betId', betByIdImport.data.postBetbyId); a FAIRE
-app.put('/api/betById/:betId',  betByIdImport.data.putBetById); // Mise à jour d'un pari grâce à un ID
+app.post('/api/betById/:betId',  betByIdImport.data.putBetById); // Mise à jour d'un pari grâce à un ID
 // app.delete('/api/betById/:betId', betByIdImport.data.deleteBetbyId); a FAIRE
 
 //stats
@@ -92,12 +92,12 @@ app.get('/addSports', function (req, res) {
 app.get('/addBets', async function(req, res) {
   const data = [];
   
-  let bddDocument = db.collection('Sport');
-  bddDocument.get() // Récupère tous les sports
-  .then(docs => {
-    docs.forEach(doc => {   // Pour chaque sport, l'insère dans le tableau 
-      const data = [];
-      let docData = doc.data();
+  // let bddDocument = db.collection('Sport');
+  // bddDocument.get() // Récupère tous les sports
+  // .then(docs => {
+  //   docs.forEach(doc => {   // Pour chaque sport, l'insère dans le tableau 
+  //     const data = [];
+  //     let docData = doc.data();
       var url = 'https://api.the-odds-api.com/v3/odds/?sport=upcoming&region=uk&mkt=h2h&apiKey='+key;
       let settings = { method: "Get" };
 
@@ -144,13 +144,13 @@ app.get('/addBets', async function(req, res) {
 
             if(documents.length > 0 ) { // S'il y a des enregistrements dans la base 
               findInDocument = documents.find(docTmp => { // Alors on compare les données de l'api et de la bdd pour voir s'il y a des doublons
-                return(docTmp.teamOne == jsonData.teams[0] && docTmp.teamTwo == jsonData.teams[1] && docTmp.startTime == jsonData.commence_time); //si non findInDocument vaut "undefined"
+                return(docTmp.teamOne == jsonData.teams[0] && docTmp.teamTwo == jsonData.teams[1] && docTmp.date == jsonData.commence_time); //si non findInDocument vaut "undefined"
               }); 
             }
 
             if(!findInDocument) {
               let data = {  // Formatage des données avant insertion dans la base
-                startTime: moment.unix(jsonData.commence_time).format("DD-MM-YYYY"),
+                date: moment.unix(jsonData.commence_time).format("DD-MM-YYYY"),
                 homeTeam: jsonData.home_team,
                 teamOne:jsonData.teams[0],
                 teamTwo: jsonData.teams[1],
@@ -172,8 +172,8 @@ app.get('/addBets', async function(req, res) {
         console.log('Error getting documents', err);
       });
     });
-  });
-});
+//   });
+// });
 
 // ------------- Au lancement du serveur, insère les informations de l'api dans la base de données -------------//
 app.listen(3000, function() {}); // Ecoute sur le port 3000

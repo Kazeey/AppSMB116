@@ -31,13 +31,18 @@ let methods = {
 
     // ------------- Permet d'ajouter une description et un etat à un pari, en fonction des paramètres -------------//
     putBetById : function(req, res){
-        let Bets = db.collection('App').doc(req.params.betId); // Récupère le paramètre betId depuis une requête Get
+        let Bets = db.collection('Bet').doc(req.body.betId); // Récupère le paramètre betId depuis une requête Get
         let updateSingle = { // Mise à jour des données en base
-          description : req.params.description,
-          etatBet : req.params.etat
+            teamOne: req.body.teamOne,
+            teamTwo: req.body.teamTwo,
+            sport: req.body.sport,
+            date: req.body.date,
+            description : req.body.description,
+            winner : req.body.winner,
         };
       
         Bets.update(updateSingle);
+        res.send({response : "La mise à jour a bien été effectuée !"})
     },
 
 }

@@ -5,25 +5,25 @@ import {View, StyleSheet,  } from 'react-native';
 import { Text } from 'react-native-elements';
 
 const styles = StyleSheet.create({
-    errorMessageWrapper: {
+    validMessageWrapper: {
         backgroundColor: 'rgba(210,26,16,.15)',
         margin: 20 + 'px',
     },
-    errorMessageText: {
+    validMessageText: {
         color: '#d21a10',
         padding: 10 + 'px',
     }
   });
 
-function errorMessageComponent(errorMessage) {
+function validMessageComponent(validMessage) {
   return (
-      <View style={styles.errorMessageWrapper}> 
-          <Text style={styles.errorMessageText}>
-            {errorMessage}
+      <View style={styles.validMessageWrapper}> 
+          <Text style={styles.validMessageText}>
+            {validMessage}
           </Text>
       </View>
   )
 }
     
-  export default errorMessageComponent;  
+  export default validMessageComponent;  
     

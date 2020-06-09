@@ -5,6 +5,7 @@ import {View, StyleSheet } from 'react-native';
 import { Input, Button, Text, CheckBox, Card, ListItem } from 'react-native-elements';
 import updateBet from '../../../actions/updateBet';
 import errorMessageComponent from '../../text/errorMessage/index';
+import { eq } from 'react-native-reanimated';
 
 const styles = StyleSheet.create({
     updateButton:{
@@ -12,9 +13,16 @@ const styles = StyleSheet.create({
     },
 });
 
-function verifInput(teamOne, teamTwo, sport, date, description, winner, stateBet, setAuth) {
+function verifInput(teamOne, teamTwo, sport, date, description, victoryTeamOne, victoryTeamTwo, equality, betId, setAuth) {
     const indexOfSlash = date.indexOf('/'); // vérifie la présence d'un '/' dans la date pour laisser le format au DD-MM-YYYY et non pas DD/MM/YYYY
     let resultat;
+    let winner;
+
+    if(description == '')
+    {
+        description = "No description";
+    }
+
     // TO DO : vérifier la présence de lettre dans le champ
     if( indexOfSlash > 0) // s'il y a un slash dans la date, renvoi un message d'erreur
     {
@@ -22,25 +30,41 @@ function verifInput(teamOne, teamTwo, sport, date, description, winner, stateBet
     } 
     else 
     {  
-        updateBet(teamOne, teamTwo, sport, date, description, winner, stateBet, setAuth)
+        if(victoryTeamOne === true)
+        {
+            winner = teamOne;
+        }
+        else
+        {          
+            if(victoryTeamTwo === true)
+            {
+                winner = teamTwo;
+            }
+            else
+            {
+                winner = "Égalité !";
+            }
+        }
+        
+        updateBet(teamOne, teamTwo, sport, date, description, winner, betId, setAuth)
     }
 }
 
 function singleBetAdminComponent(bet) {
-    console.log(bet);
     // Champs :
     const [teamOne, setTeamOne] = React.useState(bet.teamOne);            
     const [teamTwo, setTeamTwo] = React.useState(bet.teamTwo);             
     const [sport, setSport] = React.useState(bet.sport);                 
-    const [date, setDate] = React.useState(bet.startTime);                   
+    const [date, setDate] = React.useState(bet.date);                   
     const [valueOne, setValueOne] = React.useState(bet.valueOne);           
     const [valueTwo, setValueTwo] = React.useState(bet.valueTwo);           
-    const [description, setDescription] = React.useState('');           
-    const [stateBet, setStateBet] = React.useState('');              
-    const [winner, setWinner] = React.useState('');   
+    const [description, setDescription] = React.useState(bet.description);           
+    const [victoryTeamOne, setvictoryTeamOne] = React.useState(false);   
+    const [victoryTeamTwo, setvictoryTeamTwo] = React.useState(false);   
+    const [equality, setEquality] = React.useState(false);   
     const [betId, setBetId] = React.useState(bet.betId);   
     const [authError, setAuth] = React.useState(false);
-
+    console.log(bet)
     return (
         <View>
             <Input
@@ -76,19 +100,11 @@ function singleBetAdminComponent(bet) {
                 leftIcon={{type:'font-awesome', name: 'calendar-o'}} // icone de l'input
             />
             <Input
-                placeholder="Description"
+                placeholder={description ? description : 'Description'}
                 inputContainerStyle={styles.loginInput}
                 leftIconContainerStyle={styles.loginInputIcon}
                 value={description}
                 onChange={(newValue)=> setDescription(newValue.target.value)}
-                leftIcon={{type:'font-awesome', name: 'percent'}} // icone de l'input
-            />
-            <Input
-                placeholder="État du match"
-                inputContainerStyle={styles.loginInput}
-                leftIconContainerStyle={styles.loginInputIcon}
-                value={stateBet}
-                onChange={(newValue)=> setStateBet(newValue.target.value)}
                 leftIcon={{type:'font-awesome', name: 'percent'}} // icone de l'input
             />
             {bet.site.map((siteProno) => {
@@ -122,25 +138,31 @@ function singleBetAdminComponent(bet) {
             >
                 <CheckBox 
                     title= { teamOne }
-                    checked={winner === teamOne} 
+                    checked={victoryTeamOne} 
                     onPress={() => {
-                            setWinner(teamOne)
+                            setvictoryTeamOne(true)
+                            setvictoryTeamTwo(false)
+                            setEquality(false)
                         }
                     }
                 />
                 <CheckBox 
                     title= { teamTwo }
-                    checked={winner === teamTwo} 
+                    checked={victoryTeamTwo} 
                     onPress={() => {
-                            setWinner(teamTwo)
+                        setvictoryTeamOne(false)
+                        setvictoryTeamTwo(true)
+                        setEquality(false)
                         }
                     }
                 />
                 <CheckBox 
                     title= "Égalité"
-                    checked={winner === 'equality'} 
+                    checked={equality} 
                     onPress={() => {
-                            setWinner('equality')
+                        setvictoryTeamOne(false)
+                        setvictoryTeamTwo(false)
+                        setEquality(true)
                         }
                     }
                 />
@@ -153,9 +175,9 @@ function singleBetAdminComponent(bet) {
                 title='Mettre à jour le pari'
                 containerStyle={styles.updateButton}
                 // Vérifie qu'aucun des champs n'est vide avant de permettre à l'utilisateur de cliquer sur le bouton de création de paris
-                disabled={teamOne === '' || teamTwo === '' || sport === '' || date === '' || description === ''|| stateBet === '' || winner === false}
-                onPress={() => verifInput(teamOne, teamTwo, sport, date, description, stateBet, winner, setAuth)}
-            >
+                disabled={teamOne === '' || teamTwo === '' || sport === '' || date === '' }
+                onPress={() => verifInput(teamOne, teamTwo, sport, date, description, victoryTeamOne, victoryTeamTwo, equality, betId, setAuth)}
+            >                                 
             </Button>
         </View>
     );

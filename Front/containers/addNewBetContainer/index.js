@@ -122,7 +122,7 @@ function addNewBetContainer({ navigation }) {
               leftIcon={{type:'font-awesome', name: 'futbol-o'}} // icone de l'input
             />
             <Input
-              placeholder='Date'
+              placeholder='Date (DD-MM-YYYY)'
               inputContainerStyle={styles.loginInput}
               leftIconContainerStyle={styles.loginInputIcon}
               value={date}

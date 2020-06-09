@@ -28,7 +28,7 @@ let methods = {
 
     getDailyBets : async function(req, res) { // Récupère tous les paris de la journée
       const data = [];
-      let bddDocument = await db.collection('Bet').where('startTime', '==', req.body.date); // Cherche tous les paris ou la date correspond à la valeur récupérée depuis la méthode POST
+      let bddDocument = await db.collection('Bet').where('date', '==', req.body.date); // Cherche tous les paris ou la date correspond à la valeur récupérée depuis la méthode POST
       bddDocument.get() // Récupère tous les sports
       .then(docs => {
         docs.forEach(doc => {   // Pour chaque sport, l'insère dans le tableau data
@@ -44,12 +44,12 @@ let methods = {
         teamOne: req.body.teamOne,
         teamTwo: req.body.teamTwo,
         sport: req.body.sport,
-        startTime: req.body.date,
+        date: req.body.date,
         homeTeam: req.body.homeTeam,
         site : [{
           mean : req.body.mean,
           valueOne : req.body.valueOne,
-          valuetwo : req.body.valueTwo,
+          valueTwo : req.body.valueTwo,
           siteKey : "TvsProno"
         }],
         betId : random,
@@ -57,7 +57,6 @@ let methods = {
       
       let Bets = db.collection('Bet').doc(`${random}`).set(data); // Ajout des données en base
       res.send({response : "Pari ajouté !"}); // Envoie tout au front
-
     }
 }
 

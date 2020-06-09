@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {View, StyleSheet, ImageBackground } from 'react-native';
+import {View, StyleSheet, ImageBackground, Alert } from 'react-native';
 
 import { Input, Button, Text } from 'react-native-elements';
 
@@ -136,13 +136,16 @@ function loginContainer({ navigation }) {
               onPress={() => navigation.navigate('createNewAccountContainer')}
             >
             </Button>
+            {
+              // TODO : Double vérification, avec une alert
+            }
             <Button
               title='Mot de passe oublié'
               type="clear"
               containerStyle={styles.buttonForgotPassword}
               disabled={username===''}
               onPress={() => resetPassword(username, setAuth)}
-            >
+            > 
             </Button>
         </View>
       </ImageBackground>
