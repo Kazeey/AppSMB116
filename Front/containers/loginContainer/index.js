@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {View, StyleSheet,  } from 'react-native';
+import {View, StyleSheet, ImageBackground } from 'react-native';
 
-import { Input, Button, Text, ImageBackground } from 'react-native-elements';
+import { Input, Button, Text } from 'react-native-elements';
 
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     alignSelf: 'center',
-    marginBottom: 80 + 'px',
+    marginBottom: 30 + 'px',
   },
   loginInput: {
     margin: 20 + 'px',
@@ -34,8 +34,20 @@ const styles = StyleSheet.create({
     marginRight: 10+'px'
   },
   loginButton: {
-    margin: 20 + 'px',
+    margin: 10 + 'px',
+    backgroundColor: '#4faa7c',
   },
+  buttonForgotPassword:{
+    margin: 10 + 'px',
+    textDecorationLine: 'underline',
+    color: 'grey',
+  },
+  buttonNewAccount: { 
+    margin: 10 + 'px',
+  },
+  backgroundImg:{
+    flex: 1,
+  }
 });
 
 //Fonction provisoire qui sera remplacé par une API
@@ -69,55 +81,63 @@ function loginContainer({ navigation }) {
   const [authError, setAuth] = React.useState(false);
 
     return (
-      <View style={styles.loginWrapper}>
-          <Image
-            source={{ uri: loginImage }}
-            containerStyle={styles.loginImage}
-          />
-          <Input
-            placeholder='Username'
-            inputContainerStyle={styles.loginInput}
-            leftIconContainerStyle={styles.loginInputIcon}
-            value={username}
-            onChange={(newValue)=> setUsername(newValue.target.value)}
-            leftIcon={{type:'font-awesome', name: 'user'}}
-          />
-          <Input
-            placeholder='Password'
-            inputContainerStyle={styles.loginInput}
-            leftIconContainerStyle={styles.loginInputIcon}
-            value={password}
-            onChange={(newValue)=> setPassword(newValue.target.value)}
-            leftIcon={{type:'font-awesome', name: 'lock'}}
-            secureTextEntry={true}
-          />
-          {
-            authError && errorMessageComponent(authError)
-          }
-          {
-            //TODO: Connexion avec Google / Facebook avec JWT
-          }
-          <Button
-            title='Se connecter'
-            containerStyle={styles.loginButton}
-            disabled={password === '' || username===''}
-            onPress={() => login(username, password, setAuth, navigation)}
-          >
-          </Button>
-          <Button
-            title='Mot de passe oublié'
-            containerStyle={styles.loginButton}
-            disabled={username===''}
-            onPress={() => resetPassword(username, setAuth)}
-          >
-          </Button>
-          <Button
-            title='Créer un compte'
-            containerStyle={styles.loginButton}
-            onPress={() => navigation.navigate('createNewAccountContainer')}
-          >
-          </Button>
-      </View>
+      <ImageBackground 
+        source={require("../../utils/picture/background.png")}
+        style={styles.backgroundImg}
+      >
+          <View style={styles.loginWrapper}>
+            <Image
+              source={{ uri: loginImage }}
+              containerStyle={styles.loginImage}
+            />
+            <Input
+              placeholder='Username'
+              inputContainerStyle={styles.loginInput}
+              leftIconContainerStyle={styles.loginInputIcon}
+              value={username}
+              onChange={(newValue)=> setUsername(newValue.target.value)}
+              leftIcon={{type:'font-awesome', name: 'user'}}
+            />
+            <Input
+              placeholder='Password'
+              inputContainerStyle={styles.loginInput}
+              leftIconContainerStyle={styles.loginInputIcon}
+              value={password}
+              onChange={(newValue)=> setPassword(newValue.target.value)}
+              leftIcon={{type:'font-awesome', name: 'lock'}}
+              secureTextEntry={true}
+            />
+            {
+              authError && errorMessageComponent(authError)
+            }
+            {
+              //TODO: Connexion avec Google / Facebook avec JWT
+            }
+            <Button
+              title='Se connecter'
+              containerStyle={styles.loginButton}
+              disabled={password === '' || username===''}
+              onPress={() => login(username, password, setAuth, navigation)}
+            >
+            </Button>
+            <Button
+              title='Mot de passe oublié'
+              type="clear"
+              containerStyle={styles.buttonForgotPassword}
+              disabled={username===''}
+              onPress={() => resetPassword(username, setAuth)}
+            >
+            </Button>
+            <Button
+              title='Créer un compte'
+              type="outline"
+              containerStyle={styles.buttonNewAccount}
+              onPress={() => navigation.navigate('createNewAccountContainer')}
+            >
+            </Button>
+        </View>
+      </ImageBackground>
+      
     );
 }
 export default loginContainer;  
