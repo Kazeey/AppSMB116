@@ -18,9 +18,9 @@ function verifInput(teamOne, teamTwo, sport, date, description, victoryTeamOne, 
     let resultat;
     let winner;
 
-    if(description == '')
+    if(!description)
     {
-        description = "No description";
+        description = "Pas de description pour le moment";
     }
 
     // TO DO : vérifier la présence de lettre dans le champ

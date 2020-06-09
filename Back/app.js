@@ -5,6 +5,7 @@ const cors = require('cors');
 const nodemailer = require("nodemailer");
 const bodyParser = require('body-parser');
 const moment = require('moment');
+const { uuid } = require('uuidv4');
 
 const key = "8f0736cf5aa618c9903b9f96973b3b59"; // Clé de l'api
 const allSports = "https://api.the-odds-api.com/v3/sports/?all=true&apiKey="+key; // Récupération des sports
@@ -118,6 +119,7 @@ app.get('/addBets', async function(req, res) {
           });
 
           for(const jsonData of json.data) { // Pour chaque "data" du json retourné par l'api
+              let random = uuid();
               let arraySites = [];
               let findInDocument = false; // initialisation de la variable de comparaison a false
 
@@ -156,11 +158,11 @@ app.get('/addBets', async function(req, res) {
                 teamTwo: jsonData.teams[1],
                 site : arraySites,
                 sport: jsonData.sport_nice,
-                betId: nbDocuments,
+                betId: random,
               };
 
               nbDocuments++; // Incrémentation du nombre de paris présent en base pour l'ID
-              let Bets = db.collection('Bet').doc(`${nbDocuments}`).set(data); // Insertion dans la base
+              let Bets = db.collection('Bet').doc(`${random}`).set(data); // Insertion dans la base
               console.log("Insertion effectuée");
             } else {
               console.log("L'enregistrement existe déjà");

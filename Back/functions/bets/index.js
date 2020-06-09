@@ -54,7 +54,6 @@ let methods = {
         }],
         betId : random,
       };
-      
       let Bets = db.collection('Bet').doc(`${random}`).set(data); // Ajout des données en base
       res.send({response : "Pari ajouté !"}); // Envoie tout au front
     }
