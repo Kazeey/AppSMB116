@@ -8,7 +8,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { Image } from 'react-native-elements';
 
 import loginImage from '../../utils/picture/loginImage.png';
-import backgroundImage from '../../utils/picture/background.png';
+import backgroundLogin from '../../utils/picture/background.png';
+
 import errorMessageComponent from '../../components/text/errorMessage/index';
 
 // Imports des fonctions de communications avec le back
@@ -85,7 +86,7 @@ function loginContainer({ navigation }) {
 
     return (
       <ImageBackground 
-        source={require("../../utils/picture/background.png")}
+        source={backgroundLogin}
         style={styles.backgroundImg}
       >
           <View style={styles.loginWrapper}>
@@ -99,7 +100,7 @@ function loginContainer({ navigation }) {
               leftIconContainerStyle={styles.loginInputIcon}
               value={username}
               onChange={(newValue)=> setUsername(newValue.target.value)}
-              leftIcon={{type:'font-awesome', name: 'user'}}
+              leftIcon={{type:'font-awesome', name: 'user-o'}}
             />
             <Input
               placeholder='Password'
@@ -124,17 +125,17 @@ function loginContainer({ navigation }) {
             >
             </Button>
             <Button
+              title='Créer un compte'
+              buttonStyle={styles.buttonNewAccount}
+              onPress={() => navigation.navigate('createNewAccountContainer')}
+            >
+            </Button>
+            <Button
               title='Mot de passe oublié'
               type="clear"
               containerStyle={styles.buttonForgotPassword}
               disabled={username===''}
               onPress={() => resetPassword(username, setAuth)}
-            >
-            </Button>
-            <Button
-              title='Créer un compte'
-              buttonStyle={styles.buttonNewAccount}
-              onPress={() => navigation.navigate('createNewAccountContainer')}
             >
             </Button>
         </View>

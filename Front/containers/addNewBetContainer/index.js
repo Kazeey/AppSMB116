@@ -35,7 +35,7 @@ const verifInput = (teamOne, teamTwo, sport, date, valueOne, valueTwo, homeTeamO
     homeTeam = teamTwo;
   }
 
-  // Vérification du format des inputs des côtes de chaque équipe
+  // Vérification du format des inputs des cotes de chaque équipe
   let floatCoteOne = parseFloat(valueOne); 
   let floatCoteTwo = parseFloat(valueTwo);
 
@@ -49,13 +49,13 @@ const verifInput = (teamOne, teamTwo, sport, date, valueOne, valueTwo, homeTeamO
   } 
   else 
   {  
-    if(isNaN(floatCoteOne) || isNaN(floatCoteTwo)) // Si les côtes ne sont pas des floats, renvoi un message d'erreur
+    if(isNaN(floatCoteOne) || isNaN(floatCoteTwo)) // Si les cotes ne sont pas des floats, renvoi un message d'erreur
     {
-      setAuth("Le format de l'un des deux champs 'côte' n'est pas valide.");
+      setAuth("Le format de l'un des deux champs 'cote' n'est pas valide.");
     } 
     else 
     {
-      mean = ((floatCoteOne + floatCoteTwo) / 2); // créer la moyenne des côtes 
+      mean = ((floatCoteOne + floatCoteTwo) / 2); // créer la moyenne des cotes 
       createBet(teamOne, teamTwo, sport, date, valueOne, valueTwo, mean, homeTeam, setAuth); // fonction de création de pari
     }
   }
@@ -69,8 +69,8 @@ function addNewBetContainer({ navigation }) {
     const [homeTeamTwo, setHomeTeamTwo] = React.useState(false);  
     const [sport, setSport] = React.useState('');                 // sport    -> Sport de la rencontre
     const [date, setDate] = React.useState('');                   // date     -> Date de la rencontre
-    const [valueOne, setValueOne] = React.useState('');           // valueOne -> Côte de l'équipe numéro 1
-    const [valueTwo, setValueTwo] = React.useState('');           // valueTwo -> Côte de l'équipe numéro 2
+    const [valueOne, setValueOne] = React.useState('');           // valueOne -> Cote de l'équipe numéro 1
+    const [valueTwo, setValueTwo] = React.useState('');           // valueTwo -> Cote de l'équipe numéro 2
     const [authError, setAuth] = React.useState(false);
 
     return (
@@ -129,7 +129,7 @@ function addNewBetContainer({ navigation }) {
               leftIcon={{type:'font-awesome', name: 'calendar-o'}} // icone de l'input
             />
             <Input
-              placeholder="Côte de l'équipe n°1"
+              placeholder="Cote de l'équipe n°1"
               inputContainerStyle={styles.loginInput}
               leftIconContainerStyle={styles.loginInputIcon}
               value={valueOne}
@@ -137,7 +137,7 @@ function addNewBetContainer({ navigation }) {
               leftIcon={{type:'font-awesome', name: 'percent'}} // icone de l'input
             />
             <Input
-              placeholder="Côte de l'équipe n°2"
+              placeholder="Cote de l'équipe n°2"
               inputContainerStyle={styles.loginInput}
               leftIconContainerStyle={styles.loginInputIcon}
               value={valueTwo}
