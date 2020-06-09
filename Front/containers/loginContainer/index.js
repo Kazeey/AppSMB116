@@ -32,10 +32,14 @@ const styles = StyleSheet.create({
     margin: 20 + 'px',
   },
   loginInputIcon: {
-    marginRight: 10+'px'
+    marginRight: 10+'px',
+    color: 'white', 
+  },
+  inputStyleLogin:{
+    color: 'white',
   },
   loginButton: {
-    margin: 10 + 'px',
+    margin: 10 +  'px',
     backgroundColor: '#4faa7c',
     color: 'white',
   },
@@ -99,16 +103,18 @@ function loginContainer({ navigation }) {
               inputContainerStyle={styles.loginInput}
               leftIconContainerStyle={styles.loginInputIcon}
               value={username}
+              inputStyle={styles.inputStyleLogin}
               onChange={(newValue)=> setUsername(newValue.target.value)}
-              leftIcon={{type:'font-awesome', name: 'user-o'}}
+              leftIcon={{type:'font-awesome', name: 'user-o', color: 'white'}}
             />
             <Input
               placeholder='Password'
               inputContainerStyle={styles.loginInput}
               leftIconContainerStyle={styles.loginInputIcon}
               value={password}
+              inputStyle={styles.inputStyleLogin}
               onChange={(newValue)=> setPassword(newValue.target.value)}
-              leftIcon={{type:'font-awesome', name: 'lock'}}
+              leftIcon={{type:'font-awesome', name: 'lock', color: 'white'}}
               secureTextEntry={true}
             />
             {

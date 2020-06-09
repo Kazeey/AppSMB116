@@ -13,14 +13,17 @@ import { Card, ListItem, Button} from 'react-native-elements'
 import getDailyBets from '../../actions/dailyBets';
 
 const styles = StyleSheet.create({
+  backgroundImg:{
+    flex: 1,
+  },
   seeMoreButton:{
     margin: 10 + 'px',
     backgroundColor: '#4faa7c',
     color: 'white',
-  backgroundImg:{
-    flex: 1,
   },
-}
+  cardStyle:{
+    marginBottom: 10 + 'px',
+  },
 })
 
 //Récupération des variables du react navigation
@@ -33,7 +36,7 @@ const getData = async () => {
   } catch(e) {
     // error reading value
   }
-});
+};
 
 function dailyBetsContainer({ navigation }) {
 
@@ -49,40 +52,38 @@ function dailyBetsContainer({ navigation }) {
   return (
     <ScrollView>
         {headerComponent(navigation, 'Pari du jour')}
-        {
-          
-          //TODO : Pagination ou limite
-          dailyBets.map((dailyBet)=> {
-            return (      
               <ImageBackground 
                 source={backgroundOnPages}
                 style={styles.backgroundImg}
               >
-              <View key={dailyBet.betId}>
-                
-                <Card
-                key={dailyBet.betId}
-                title={dailyBet.teamOne + ' vs ' + dailyBet.teamTwo} // Titre du pari
-                >
-                <ListItem
+              <View   >
+                {
+                dailyBets.map((dailyBet)=> {
+                  return ( <Card
                     key={dailyBet.betId}
-                    subtitle={
-                      <View>
-                        <Button
-                          title='Voir plus' // Bouton pour avoir plus d'informations sur le pari 
-                          onClick={() => navigation.navigate('singleBetContainer', {singleBet: dailyBet, role : role})}
-                        >
-                        </Button>
-                      </View>
-                    }
-                    bottomDivider
-                />
-                </Card>
+                    containerStyle={styles.cardStyle}
+                    title={dailyBet.teamOne + ' vs ' + dailyBet.teamTwo} // Titre du pari
+                  >
+                    <ListItem
+                        key={dailyBet.betId}
+                        subtitle={
+                          <View>
+                            <Button
+                              title='Voir plus' // Bouton pour avoir plus d'informations sur le pari
+                              buttonStyle={styles.seeMoreButton}
+                              onClick={() => navigation.navigate('singleBetContainer', {singleBet: dailyBet, role : role})}
+                            >
+                            </Button>
+                          </View>
+                        }
+                        bottomDivider
+                    />
+                  </Card>
+                  )
+                  })
+                }
               </View>
             </ImageBackground>
-            )
-          })
-        }
       </ScrollView>
     );
   }

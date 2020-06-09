@@ -24,7 +24,10 @@ const styles = StyleSheet.create({
     margin: 10 + 'px',
     backgroundColor: '#4faa7c',
     color: 'white',
-  }
+  },
+  cardStyle:{
+    marginBottom: 10 + 'px',
+  },
 });
 // récupération de l'id de l'utilisateur stocké lors de la connexion
 const getData = async () => {
@@ -51,8 +54,8 @@ function betsContainer({ navigation }) {
   
     return (
       <ImageBackground 
-      source={backgroundOnPages}
-      style={styles.backgroundImg}
+        source={backgroundOnPages}
+        style={styles.backgroundImg}
       >
         <ScrollView >
           {headerComponent(navigation, "Liste des paris")}
@@ -63,6 +66,7 @@ function betsContainer({ navigation }) {
                 <View key={allBet.betId}>
                   <Card
                   key={allBet.betId}
+                  containerStyle={styles.cardStyle}
                   title={title} // Titre du pari
                   >
                   <ListItem
@@ -71,7 +75,7 @@ function betsContainer({ navigation }) {
                         <View>
                           <Button // Voir plus d'informations concernant le pari
                             title='Voir plus'
-                            style={styles.seeMoreButton}
+                            buttonStyle={styles.seeMoreButton}
                             onClick={() => navigation.navigate('singleBetContainer', {singleBet: allBet, role : role})}
                           >
                           </Button>
@@ -87,11 +91,10 @@ function betsContainer({ navigation }) {
           {
             // Si le role de l'utilisateur est "admin", alors il pourra voir le bouton, pour rajouter un pari
             role === "admin" && <Button
-            title='Ajouter un nouveau Pari'
-            style={styles.addNewButton}
-            onClick={() => navigation.navigate('addNewBetContainer')}
-            >
-            </Button>
+              title='Ajouter un nouveau Pari'
+              buttonStyle={styles.addNewButton}
+              onClick={() => navigation.navigate('addNewBetContainer')}
+            />
           }
         </ScrollView>
       </ImageBackground>
