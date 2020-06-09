@@ -5,6 +5,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 import getProfile from '../../actions/profile';
 import backgroundOnPages from '../../utils/picture/backgroundPage.png';
+import profileUser from '../../components/singleBet/admin';
+import profileAdmin from '../../components/singleBet/user';
 
 //Declaration du style
 const styles = StyleSheet.create({

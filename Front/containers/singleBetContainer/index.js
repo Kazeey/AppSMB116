@@ -4,7 +4,7 @@ import { Card, Text} from 'react-native-elements'
 
 import headerComponent from '../../components/header/index';
 import singleBetAdmin from '../../components/singleBet/admin';
-import singleUserAdmin from '../../components/singleBet/user';
+import singleBetUser from '../../components/singleBet/user';
 
 import checkRole from '../../actions/security';
 
@@ -37,7 +37,7 @@ function singleBetContainer({ route, navigation }) {
               {singleBet.describe}
             </Text>
 
-            {role === "admin" ? singleBetAdmin(singleBet) : singleUserAdmin(singleBet)}
+            {role === "admin" ? singleBetAdmin(singleBet) : singleBetUser(singleBet)}
             
           </Card>
         </View>

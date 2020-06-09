@@ -162,11 +162,11 @@ let methods = {
       await checkBddUser.get()
       .then(async docs =>  {
         //Récupération des informations du users
-        let documentsUser = null;
+        let documentsUser = [];
         docs.forEach(doc => { 
           if(doc.data())
           {
-            documentsUser = doc.data();
+            documentsUser.push(doc.data())
           }
           else
           {
@@ -174,7 +174,7 @@ let methods = {
           }
         });
 
-        if(documentsUser === null){
+        if(documentsUser.length < 1){
           let bddUser = db.collection('User');
           bddUser.get()
           .then(async docs =>  {
@@ -191,26 +191,28 @@ let methods = {
 
           res.send({response : "Un mail vous à été envoyé à l'adresse : " + req.body.mail});
         } else {
-          if(documentsUser.mail == req.body.mail) {
-            res.send({response : "L'adresse mail est déjà associée à un compte !"});
-          } else {            
-            let bddUser = db.collection('User');
-            bddUser.get()
-            .then(async docs =>  {
-              let createBddUser = db.collection('User').doc(`${newAccount.userId}`).set(newAccount);
-            });   
+          documentsUser.forEach(docUser => {
+            if(docUser.mail == req.body.mail) {
+              res.send({response : "L'adresse mail est déjà associée à un compte !"});
+            } else {           
+              let bddUser = db.collection('User');
+              bddUser.get()
+              .then(async docs =>  {
+                let createBddUser = db.collection('User').doc(`${newAccount.userId}`).set(newAccount);
+              });   
 
-            transporter.sendMail(mailOptions, function(error, info){
-              if (error) {
-                console.log("Erreur lors de l'envoi ", error);
-              } else {
-                console.log('Email envoyé : ' + info.response);
-              }
-            });
-            res.send({response : "Un mail vous à été envoyé à l'adresse : " + req.body.mail });
-          }
+              transporter.sendMail(mailOptions, function(error, info){
+                if (error) {
+                  console.log("Erreur lors de l'envoi ", error);
+                } else {
+                  console.log('Email envoyé : ' + info.response);
+                }
+              });
+              res.send({response : "Un mail vous à été envoyé à l'adresse : " + req.body.mail });
+            }
+          });
         } 
-      });
+      })
     },
 
     resetPassword : async function(req, res){
