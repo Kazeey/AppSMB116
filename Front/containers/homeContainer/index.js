@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, ImageBackground} from 'react-native';
+import { View, StyleSheet, ScrollView, ImageBackground} from 'react-native';
 import {Text} from 'react-native-elements';
 import headerComponent from '../../components/header/index';
 
@@ -19,6 +19,9 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto-Light",
     color : "white",
     backgroundColor : 'rgba(0,0,0,0.5)'
+  },
+  wrapperStyle: {
+    marginBottom: 20+'px',
   },
   paragOne: {
     fontSize : 20+'px',
@@ -47,9 +50,8 @@ function homeContainer({ navigation }) {
         source={backgroundOnPages}
         style={styles.backgroundImg}
       >
-        <View>   
+        <ScrollView>   
             {headerComponent(navigation, "Page d'accueil")}
-
             <Text style={styles.global}>
               <Text style={styles.paragOne}>
                 TvsProno est l’application qui vous permets d’avoir la meilleur vision de vos paris et des matchs à venir. {"\n"}
@@ -76,14 +78,10 @@ function homeContainer({ navigation }) {
                 <a href="https://www.joueurs-info-service.fr">https://www.joueurs-info-service.fr</a> 
               </Text>
             </Text>
-        </View>
+        </ScrollView>
       </ImageBackground>
     );
   }
   export default homeContainer;
-
-
-  
-  //
   
   
