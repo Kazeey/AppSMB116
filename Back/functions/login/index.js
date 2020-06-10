@@ -135,7 +135,7 @@ let methods = {
       });
       
     },
-
+    //a revoir
     createAccount : async function(req, res){  // Création d'un comtpe
       let tempPassword = Math.floor(Math.random() * 1000000) + 100000;
 
@@ -192,9 +192,8 @@ let methods = {
           res.send({response : "Un mail vous à été envoyé à l'adresse : " + req.body.mail});
         } else {
           documentsUser.forEach(docUser => {
-            if(docUser.mail == req.body.mail) {
-              res.send({response : "L'adresse mail est déjà associée à un compte !"});
-            } else {           
+            if(docUser.mail != req.body.mail) 
+            {         
               let bddUser = db.collection('User');
               bddUser.get()
               .then(async docs =>  {
@@ -209,6 +208,10 @@ let methods = {
                 }
               });
               res.send({response : "Un mail vous à été envoyé à l'adresse : " + req.body.mail });
+            } 
+            else 
+            { 
+              res.send({response : "L'adresse mail est déjà associée à un compte !"});
             }
           });
         } 
@@ -267,6 +270,22 @@ let methods = {
       });
       res.send({response : "Ok"});
     }, 
+
+    
+    updateAccount : async function(req, res){
+      let User = db.collection('User').doc(req.body.userId); // Récupère le paramètre betId depuis une requête Get
+      let updateSingle = { // Mise à jour des données en base
+          name: req.body.name,
+          firstname: req.body.firstname,
+          mail: req.body.mail,
+          password: req.body.password,
+          username : req.body.username,
+      };
+    
+      User.update(updateSingle);
+      res.send({response : "La mise à jour a bien été effectuée !"})
+    }
+
 }
 
 exports.data = methods;

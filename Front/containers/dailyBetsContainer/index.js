@@ -56,7 +56,7 @@ function dailyBetsContainer({ navigation }) {
                 source={backgroundOnPages}
                 style={styles.backgroundImg}
               >
-              <View   >
+              <View>
                 {
                 dailyBets.map((dailyBet)=> {
                   return ( <Card

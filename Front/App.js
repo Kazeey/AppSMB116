@@ -10,6 +10,8 @@ import homeContainer from './containers/homeContainer/index';
 import betsContainer from './containers/betsContainer/index';
 import statsContainer from './containers/statsContainer/index';
 import singleBetContainer from './containers/singleBetContainer/index';
+import singleUserContainer from './containers/singleUserContainer/index';
+//import personalUserContainer from './containers/personalUserContainer/index';
 import addNewBetContainer from './containers/addNewBetContainer/index';
 import dailyBetsContainer from './containers/dailyBetsContainer/index';
 import profileContainer from './containers/profileContainer/index';
@@ -89,6 +91,8 @@ function App() {
           <Stack.Screen name="loginContainer" component={loginContainer} options={{headerShown: false}} />
           <Stack.Screen name="home" component={Home}  options={{headerShown: false}} />
           <Stack.Screen name="singleBetContainer" component={singleBetContainer}  options={{headerShown: false}} />
+          <Stack.Screen name="singleUserContainer" component={singleUserContainer}  options={{headerShown: false}} />
+          {/* <Stack.Screen name="personalUserContainer" component={personalUserContainer}  options={{headerShown: false}} /> */}
           <Stack.Screen name="addNewBetContainer" component={addNewBetContainer}  options={{headerShown: false}} />
           <Stack.Screen name="createNewAccountContainer" component={createNewAccountContainer}  options={{headerShown: false}} />
         </Stack.Navigator>
